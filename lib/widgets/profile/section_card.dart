@@ -1,7 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 
-/// Compact section container with icon + title + thin accent bar.
+/// Glassmorphism section container with icon + title + accent bar.
 class SectionCard extends StatelessWidget {
   final String title;
   final IconData icon;
@@ -20,59 +21,69 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppTheme.borderColor.withOpacity(0.6), width: 0.8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Thin accent bar at top
-          Container(
-            height: 2.5,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [color, color.withOpacity(0.3)],
-                stops: const [0.0, 1.0],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.88),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.white.withOpacity(0.70), width: 1.0),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.10),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
               ),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-            ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 5, 8, 3),
-            child: Row(
-              children: [
-                Icon(icon, size: 13, color: color),
-                const SizedBox(width: 5),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.textPrimary,
-                      letterSpacing: 0.1,
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Accent bar at top
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [color, color.withOpacity(0.3)],
                   ),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                 ),
-                if (actions != null) ...actions!,
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 5, 8, 3),
+                child: Row(
+                  children: [
+                    Icon(icon, size: 13, color: color),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.textPrimary,
+                          letterSpacing: 0.1,
+                        ),
+                      ),
+                    ),
+                    if (actions != null) ...actions!,
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+                child: child,
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
-            child: child,
-          ),
-        ],
+        ),
       ),
     );
   }

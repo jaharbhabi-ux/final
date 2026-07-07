@@ -38,7 +38,9 @@ class UPPoliceHrmsApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        home: const AppEntryPoint(),
+        // SelectionArea makes every Text widget in the entire app
+        // selectable / copyable without changing individual widgets.
+        home: const SelectionArea(child: AppEntryPoint()),
       ),
     );
   }
@@ -102,24 +104,11 @@ class _InitialLoading extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Premium loading card with the UP Police shield
-              Container(
+              // Glassmorphism loading card
+              AppTheme.glassContainer(
+                borderRadius: 20,
+                blurSigma: 16,
                 padding: const EdgeInsets.all(40),
-                decoration: BoxDecoration(
-                  color: AppTheme.cardColor,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: AppTheme.borderColor,
-                    width: 1,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -158,17 +147,10 @@ class _InitialLoading extends StatelessWidget {
               ),
               if (provider.error.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 32),
+                AppTheme.glassContainer(
+                  borderRadius: 14,
                   padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppTheme.errorColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: AppTheme.errorColor.withOpacity(0.3),
-                      width: 1,
-                    ),
-                  ),
+                  bgColor: AppTheme.errorColor.withOpacity(0.15),
                   child: Column(
                     children: [
                       Text(

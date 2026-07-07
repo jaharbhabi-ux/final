@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
-/// Responsive data table with wrapping cells.
+/// Responsive data table with wrapping cells and selectable text.
 ///
-/// Behaviour rules (per audit):
-///   • Long text WRAPS into multiple lines — it is never cut with `…`
-///     or hard-clipped. This applies to both header and body cells.
-///   • Column widths are proportional (`FlexColumnWidth`), so the table
-///     always fits the available horizontal space — no horizontal
-///     scrolling required, works on mobile / web / desktop.
-///   • `columnMaxLines` (if provided) is treated as a SOFT hint — when
-///     set, the cell will wrap up to that many lines before applying
-///     ellipsis. When null/0, the cell wraps without limit.
+/// Behaviour rules:
+///   • Long text WRAPS into multiple lines — never cut with `…` or clipped.
+///   • Column widths are proportional (`FlexColumnWidth`).
+///   • `columnMaxLines` is a SOFT hint for ellipsis; null = unlimited wrap.
+///   • All cell text is selectable (copyable) via SelectableText.
 class UPDataTable extends StatelessWidget {
   final List<String> headers;
   final List<List<String>> rows;
@@ -55,14 +51,11 @@ class UPDataTable extends StatelessWidget {
     }
 
     final colCount = headers.length;
-    final widths = columnWidths ?? List<double>.filled(colCount, 1.0);
+    final widths   = columnWidths  ?? List<double>.filled(colCount, 1.0);
     final maxLines = columnMaxLines ?? List<int?>.filled(colCount, null);
-    final aligns = columnAlignments ?? List<TextAlign>.filled(colCount, TextAlign.left);
+    final aligns   = columnAlignments ?? List<TextAlign>.filled(colCount, TextAlign.left);
 
     return SingleChildScrollView(
-      // Vertical scroll ONLY — never horizontal. The Table inside uses
-      // FlexColumnWidth so it always fits the parent's width and lets
-      // long-text cells grow taller instead of overflowing sideways.
       scrollDirection: Axis.vertical,
       physics: const NeverScrollableScrollPhysics(),
       child: Table(
@@ -75,6 +68,7 @@ class UPDataTable extends StatelessWidget {
         ),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
+          // Header row
           TableRow(
             decoration: const BoxDecoration(
               color: Color(0xFF0D47A1),
@@ -89,19 +83,21 @@ class UPDataTable extends StatelessWidget {
                   padding: cellPadding,
                   child: Text(
                     headers[i],
-                    style: headerStyle ?? const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      letterSpacing: 0.2,
-                      height: 1.25,
-                    ),
+                    style: headerStyle ??
+                        const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: 0.2,
+                          height: 1.25,
+                        ),
                     textAlign: aligns[i],
                     softWrap: true,
                   ),
                 ),
             ],
           ),
+          // Data rows — SelectableText for copy support
           for (int r = 0; r < sortedRows.length; r++)
             TableRow(
               decoration: BoxDecoration(
@@ -109,32 +105,23 @@ class UPDataTable extends StatelessWidget {
               ),
               children: [
                 for (int c = 0; c < colCount; c++)
-                Padding(
-                  padding: cellPadding,
-                  child: Text(
-                    sortedRows[r][c].isEmpty ? '-' : sortedRows[r][c],
-                    style: cellStyle ?? const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppTheme.textPrimary,
-                      height: 1.3,
+                  Padding(
+                    padding: cellPadding,
+                    child: SelectableText(
+                      sortedRows[r][c].isEmpty ? '-' : sortedRows[r][c],
+                      style: cellStyle ??
+                          const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.textPrimary,
+                            height: 1.3,
+                          ),
+                      textAlign: aligns[c],
+                      maxLines: (maxLines[c] != null && maxLines[c]! > 0)
+                          ? maxLines[c]
+                          : null,
                     ),
-                    textAlign: aligns[c],
-                    // Wrap long text into multiple lines instead of
-                    // clipping. `softWrap: true` is the default but we
-                    // set it explicitly for clarity. `maxLines` is only
-                    // applied when the caller explicitly asked for it
-                    // (e.g. compact stat cells); otherwise the cell
-                    // grows as tall as the content needs.
-                    softWrap: true,
-                    maxLines: (maxLines[c] != null && maxLines[c]! > 0)
-                        ? maxLines[c]
-                        : null,
-                    overflow: (maxLines[c] != null && maxLines[c]! > 0)
-                        ? TextOverflow.ellipsis
-                        : TextOverflow.visible,
                   ),
-                ),
               ],
             ),
         ],

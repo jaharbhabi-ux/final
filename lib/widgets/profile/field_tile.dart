@@ -1,7 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 
-/// Ultra-compact tile with auto-icon — only as tall as the text needs.
+/// Ultra-compact glassmorphism tile — auto-icon, selectable value text.
 class FieldTile extends StatelessWidget {
   final String label;
   final String value;
@@ -34,49 +35,62 @@ class FieldTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final effectiveIcon = icon ?? _iconForLabel(label);
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: AppTheme.borderColor.withOpacity(0.5), width: 0.5),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-        child: Row(
-          children: [
-            Icon(effectiveIcon, size: 11, color: AppTheme.secondaryColor.withOpacity(0.6)),
-            const SizedBox(width: 3),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      fontSize: 8.5,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textSecondary,
-                      height: 1.15,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    value.isEmpty ? '-' : value,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textPrimary,
-                      height: 1.2,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.85),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: Colors.white.withOpacity(0.65), width: 0.8),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.primaryColor.withOpacity(0.06),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
               ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+            child: Row(
+              children: [
+                Icon(effectiveIcon, size: 11, color: AppTheme.secondaryColor.withOpacity(0.7)),
+                const SizedBox(width: 3),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        label,
+                        style: const TextStyle(
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textSecondary,
+                          height: 1.15,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      // SelectableText allows the user to copy any field value
+                      SelectableText(
+                        value.isEmpty ? '-' : value,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textPrimary,
+                          height: 1.2,
+                        ),
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
