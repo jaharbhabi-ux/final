@@ -123,7 +123,8 @@ class PrintHelper {
 
   static pw.Widget _transTable(List<TransferRecord> t) => _grid(['प्रकार', 'जिला', 'आदेश संख्या', 'पत्रावली'], t.map((e) => [e.directionLabel, e.toLocation, e.orderNumber, e.fileNumber]).toList(), [1, 1.5, 2.5, 2]);
 
-  static pw.Widget _hobTable(List<Hob> h) => _grid(['HOB #', 'दिनांक', 'विवरण', 'अन्य विवरण'], h.map((e) => [e.hobNumber, e.date, e.description, e.otherDetails]).toList(), [1, 1.2, 3, 2.4]);
+  // अन्य विवरण column removed; description gets extra width so it doesn't wrap.
+  static pw.Widget _hobTable(List<Hob> h) => _grid(['HOB #', 'दिनांक', 'विवरण'], h.map((e) => [e.hobNumber, e.date, e.description]).toList(), [1, 1.4, 6.0]);
 
   static List<pw.Widget> _salBlocks(BasicPay p) {
     final f = p.allFields;

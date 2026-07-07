@@ -600,7 +600,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        childAspectRatio: isDesktop ? 4.5 : (isTablet ? 3.8 : 3.2),
+        childAspectRatio: isDesktop ? 4.0 : (isTablet ? 3.2 : 2.8),
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),

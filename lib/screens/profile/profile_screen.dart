@@ -387,7 +387,9 @@ class _ProfileScreenState extends State<ProfileScreen>
           const SizedBox(height: 2),
           _buildPreviousPostings(profile, employee), const SizedBox(height: 2),
           _buildTransfers(profile), const SizedBox(height: 2),
-          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [Expanded(flex: 3, child: _buildHob(profile)), const SizedBox(width: 2), Expanded(flex: 2, child: _buildSalary(profile))]),
+          // HOB takes full width so description text doesn't wrap
+          _buildHob(profile), const SizedBox(height: 2),
+          _buildSalary(profile),
         ]);
       }
       return Column(children: [
@@ -524,15 +526,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (hob.isEmpty) {
       return SectionCard(title: 'HOB रिकॉर्ड', icon: Icons.book_rounded, color: AppTheme.successColor, child: const Padding(padding: EdgeInsets.symmetric(vertical: 6), child: Center(child: Text('कोई HOB रिकॉर्ड नहीं', style: TextStyle(color: AppTheme.textHint, fontSize: 12)))));
     }
-    // HOB table -- all 4 selected columns:
-    //   HOB Number | Date | Description | Other Details
-    // Long text wraps; table fits screen width via FlexColumnWidth.
+    // HOB table — 3 columns (अन्य विवरण removed per user request):
+    //   HOB Number | Date | Description
+    // Long text wraps freely; table fits screen width via FlexColumnWidth.
     return SectionCard(title: 'HOB रिकॉर्ड (${hob.length})', icon: Icons.book_rounded, color: AppTheme.successColor, child: UPDataTable(
-      headers: const ['HOB #', 'दिनांक', 'विवरण', 'अन्य विवरण'],
-      rows: hob.map((h) => [h.hobNumber, h.date, h.description, h.otherDetails]).toList(),
-      columnWidths: const [1.0, 1.2, 3.0, 2.4],
-      // null = unlimited wrapping (no ellipsis cut)
-      columnAlignments: const [TextAlign.center, TextAlign.center, TextAlign.left, TextAlign.left],
+      headers: const ['HOB #', 'दिनांक', 'विवरण'],
+      rows: hob.map((h) => [h.hobNumber, h.date, h.description]).toList(),
+      columnWidths: const [1.0, 1.4, 6.0],
+      columnAlignments: const [TextAlign.center, TextAlign.center, TextAlign.left],
     ));
   }
 

@@ -164,54 +164,30 @@ class _EmployeeEditDialogState extends State<EmployeeEditDialog> {
                   const Text('प्रधान लिपिक शाखा जनपद बरेली', style: TextStyle(fontSize: 10, color: Colors.white70)),
                 ])),
                 Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.pop(context, false),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.arrow_back_rounded, size: 12, color: Colors.white),
-                                SizedBox(width: 3),
-                                Text('वापस', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.white)),
-                              ],
-                            ),
-                          ),
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context, false),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                        const SizedBox(width: 6),
-                        Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.pop(context, false),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(Icons.arrow_back_rounded, size: 12, color: Colors.white),
-                                SizedBox(width: 3),
-                                Text('वापस', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.white)),
-                              ],
-                            ),
-                          ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            Icon(Icons.arrow_back_rounded, size: 12, color: Colors.white),
+                            SizedBox(width: 3),
+                            Text('वापस', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: Colors.white)),
+                          ],
                         ),
-                        const SizedBox(width: 6),
-                        const Text('ESC बंद', style: TextStyle(fontSize: 9, color: Colors.white54)),
-                      ],
+                      ),
                     ),
-                      ],
-                    ),
+                    const SizedBox(width: 6),
+                    const Text('ESC बंद', style: TextStyle(fontSize: 9, color: Colors.white54)),
+                  ],
+                ),
               ]),
             ),
             // Fields

@@ -247,15 +247,31 @@ class EmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Filter transfer records by order-number prefix (DG/BJD/BR).
-  /// Used by the TransferClassificationPage.
+  /// Filter transfer records by category, using the same [getStarCategory]
+  /// logic as the dashboard counts — so the list page count always matches
+  /// the number shown on the dashboard button.
+  ///
+  /// [prefix] is the Hindi prefix string from [_prefixFor] (e.g. 'डीजी-').
+  /// It is mapped to a category name ('मुख्यालय' / 'ज़ोन' / 'परिक्षेत्र') and
+  /// then each record's orderNumber is classified with [getStarCategory].
   List<dynamic> getTransferRecordsByOrderPrefix(String prefix, bool isAagman) {
     final records =
         isAagman ? _repository.getValidAagman() : _repository.getValidPrasthan();
+
+    // Map the Hindi prefix to the category name that getStarCategory returns.
+    final categoryMap = _repository.prefixToCategoryMap;
+    final targetCategory = categoryMap[prefix];
+
     return records.where((record) {
-      if (record is Aagman) return record.orderNumber.startsWith(prefix);
-      if (record is Prasthan) return record.orderNumber.startsWith(prefix);
-      return false;
+      final orderNumber = record is Aagman
+          ? record.orderNumber
+          : (record as Prasthan).orderNumber;
+      if (targetCategory != null) {
+        // Use the same classifier as the dashboard counts.
+        return _repository.getStarCategory(orderNumber) == targetCategory;
+      }
+      // Unknown prefix — fall back to raw startsWith for forward-compat.
+      return orderNumber.startsWith(prefix);
     }).toList();
   }
 

@@ -69,32 +69,28 @@ class UPEmployeeCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          'PNO: ${employee.pno}',
-                          style: const TextStyle(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.textSecondary,
-                          ),
-                        ),
-                        if (employee.badgeNumber.isNotEmpty) ...[
-                          const SizedBox(width: 4),
-                          Flexible(
-                            child: Text(
-                              'बैज: ${employee.badgeNumber}',
-                              style: const TextStyle(
-                                fontSize: 9,
-                                color: AppTheme.textSecondary,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ],
+                    // PNO and Badge — each on its own line so badge is always visible
+                    Text(
+                      'PNO: ${employee.pno}',
+                      style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                        color: AppTheme.textSecondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    if (employee.badgeNumber.isNotEmpty)
+                      Text(
+                        'बैज: ${employee.badgeNumber}',
+                        style: const TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.secondaryColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     if (employee.post.isNotEmpty)
                       Text(
                         employee.post,
