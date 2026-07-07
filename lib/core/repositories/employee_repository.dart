@@ -308,15 +308,38 @@ class EmployeeRepository {
     return out;
   }
 
-  /// Aagman rows with at least one key field (pno, name, or orderNumber) filled.
-  /// Does NOT cut at the first blank serialNo — that was too aggressive when
-  /// the sheet's serialNo column header differs slightly from the expected key.
-  /// Already-blank rows (no pno AND no name AND no orderNumber) are excluded
-  /// by getAllAagman() itself.
-  List<Aagman> getValidAagman() => getAllAagman();
+  /// Aagman rows up to the first completely blank line.
+  /// The source sheet may have archived sections below a blank row; those
+  /// are ignored for dashboard counts. A row is "blank" only when PNO,
+  /// employee name, AND order number are all empty.
+  List<Aagman> getValidAagman() {
+    final all = getAllAagman();
+    final out = <Aagman>[];
+    for (final a in all) {
+      if (a.pno.trim().isEmpty &&
+          a.employeeName.trim().isEmpty &&
+          a.orderNumber.trim().isEmpty) {
+        break;
+      }
+      out.add(a);
+    }
+    return out;
+  }
 
-  /// Prasthan rows with at least one key field filled. Same rationale as above.
-  List<Prasthan> getValidPrasthan() => getAllPrasthan();
+  /// Prasthan rows up to the first completely blank line.
+  List<Prasthan> getValidPrasthan() {
+    final all = getAllPrasthan();
+    final out = <Prasthan>[];
+    for (final p in all) {
+      if (p.pno.trim().isEmpty &&
+          p.employeeName.trim().isEmpty &&
+          p.orderNumber.trim().isEmpty) {
+        break;
+      }
+      out.add(p);
+    }
+    return out;
+  }
   int get aagmanCount => getValidAagman().length;
   int get prasthanCount => getValidPrasthan().length;
   int get hobCount => _getAllHob2025().length + _getAllHob2026().length;
@@ -450,24 +473,33 @@ class EmployeeRepository {
   /// Maps Hindi order-number prefix → category name.
   /// Used by [EmployeeProvider.getTransferRecordsByOrderPrefix] so the
   /// list page uses the same classifier as the dashboard counts.
+  /// Maps Hindi order-number prefix → category name.
+  /// Used by [EmployeeProvider.getTransferRecordsByOrderPrefix] so the
+  /// list page uses the same classifier as the dashboard counts.
   Map<String, String> get prefixToCategoryMap => {
     'à¤¡à¥€à¤œà¥€-': 'à¤®à¥à¤–à¥à¤¯à¤¾à¤²à¤¯',
-    'à¤¡à¥€à¤œà¥€ ': 'à¤œà¤¼à¥‹à¤¨',
-    'à¤¡à¥€à¤œà¥€/': 'à¤ªà¤°à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°',
+    'à¤¬à¥€à¤œà¥ˆà¤¡-': 'à¤œà¤¼à¥‹à¤¨',
+    'à¤¬à¥€à¤†à¤°-': 'à¤ªà¤°à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°',
   };
+
 
   String getStarCategory(String orderNumber) {
     final o = orderNumber.trim();
     final up = o.toUpperCase();
-    // Hindi prefixes (primary)
+    // 1. Hindi prefix checks (primary)
     if (o.startsWith('à¤¡à¥€à¤œà¥€-') || o.startsWith('à¤¡à¥€à¤œà¥€ ') || o.startsWith('à¤¡à¥€à¤œà¥€/')) return 'à¤®à¥à¤–à¥à¤¯à¤¾à¤²à¤¯';
     if (o.startsWith('à¤¬à¥€à¤œà¥ˆà¤¡-') || o.startsWith('à¤¬à¥€à¤œà¥ˆà¤¡ ') || o.startsWith('à¤¬à¥€à¤œà¥ˆà¤¡/')) return 'à¤œà¤¼à¥‹à¤¨';
     if (o.startsWith('à¤¬à¥€à¤†à¤°-') || o.startsWith('à¤¬à¥€à¤†à¤° ') || o.startsWith('à¤¬à¥€à¤†à¤°/')) return 'à¤ªà¤°à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°';
-    // English / abbreviated prefix fallbacks
+    // 2. English / abbreviated prefix fallbacks
     if (up.startsWith('DG-') || up.startsWith('D.G.-') || up.startsWith('DG/') || up.startsWith('D.G./')) return 'à¤®à¥à¤–à¥à¤¯à¤¾à¤²à¤¯';
     if (up.startsWith('BJD-') || up.startsWith('B.J.D.-') || up.startsWith('BJD/')) return 'à¤œà¤¼à¥‹à¤¨';
     if (up.startsWith('BR-') || up.startsWith('B.R.-') || up.startsWith('BR/')) return 'à¤ªà¤°à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°';
-    return 'à¤…à¤¨à¥à¤¯';
+    // 3. Keyword fallback — if the prefix isn't in front but the category word appears in the order number
+    final lower = o.toLowerCase();
+    if (lower.contains('dg') || lower.contains('डीजी') || lower.contains('मुख्यालय') || lower.contains('head')) return 'à¤®à¥à¤–à¥à¤¯à¤¾à¤²à¤¯';
+    if (lower.contains('bjd') || lower.contains('बीजैड') || lower.contains('जोन') || lower.contains('zone')) return 'à¤œà¤¼à¥‹à¤¨';
+    if (lower.contains('br') || lower.contains('बीआर') || lower.contains('परिक्षेत्र') || lower.contains('range')) return 'à¤ªà¤°à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°';
+    return 'à¤®à¥à¤–à¥à¤¯à¤¾à¤²à¤¯';
   }
 
   // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
