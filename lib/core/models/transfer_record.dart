@@ -62,6 +62,24 @@ class TransferRecord {
   String get directionLabel =>
       direction == TransferDirection.arrival ? 'आगमन' : 'प्रस्थान';
 
+  /// Display value for the “विवरण” column.
+  ///
+  /// Uses the explicit other-details column if present. Otherwise extracts
+  /// the date embedded in the order-number string (e.g. “...दिनांकः 25/05/2022”).
+  String get details {
+    if (otherDetails.trim().isNotEmpty) return otherDetails.trim();
+    return _extractDate(orderNumber);
+  }
+
+  static final RegExp _dateRegex = RegExp(
+    r'दिनांक[:\u0903]?\s*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})',
+  );
+
+  static String _extractDate(String raw) {
+    final match = _dateRegex.firstMatch(raw);
+    return match?.group(1) ?? '';
+  }
+
   /// Either source record, if you need to read fields this wrapper
   /// doesn't expose.
   dynamic get source => _aagmanSource ?? _prasthanSource;

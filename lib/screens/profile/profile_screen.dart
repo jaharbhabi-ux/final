@@ -891,7 +891,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       t.toLocation,
                       t.orderNumber,
                       t.fileNumber,
-                      t.otherDetails
+                      t.details
                     ])
                 .toList(),
             columnWidths: const [1.0, 1.3, 1.3, 1.8, 1.6, 1.8],
