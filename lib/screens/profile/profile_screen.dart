@@ -882,7 +882,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               'कहाँ को',
               'आदेश संख्या',
               'पत्रावली संख्या',
-              'अन्य विवरण'
+              'विवरण'
             ],
             rows: transfers
                 .map((t) => [

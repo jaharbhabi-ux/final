@@ -40,7 +40,7 @@ class Aagman {
       fileNumber: _val(map, [AppConstants.keyFileNumber]),
       fromWhere: _val(map, [AppConstants.keyFromWhere]),
       toWhere: _val(map, [AppConstants.keyToWhere]),
-      otherDetails: _val(map, [AppConstants.keyOtherDetails]),
+      otherDetails: _val(map, [AppConstants.keyOtherDetails, 'विवरण']),
     );
   }
 
