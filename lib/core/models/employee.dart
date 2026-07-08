@@ -89,7 +89,16 @@ class Employee {
       badgeNumber: _clean(
         map[AppConstants.keyBadge] ?? map[AppConstants.keyBadgeAlt] ?? '',
       ),
-      ehrms: _clean(map[AppConstants.keyEHRMS] ?? ''),
+      ehrms: _cleanEhrms(
+        map[AppConstants.keyEHRMS] ??
+        map[AppConstants.keyEHRMSAlt1] ??
+        map[AppConstants.keyEHRMSAlt2] ??
+        map[AppConstants.keyEHRMSAlt3] ??
+        // Last-resort: scan rawData for any key containing 'ehrms'
+        map.entries.where((e) =>
+          e.key.toLowerCase().replaceAll(RegExp(r'[\s.\-]'), '') == 'ehrms'
+        ).map((e) => e.value).firstOrNull ?? '',
+      ),
       name: map[AppConstants.keyName]?.toString().trim() ?? '',
       post: map[AppConstants.keyPost]?.toString().trim() ?? '',
       fatherName: map[AppConstants.keyFatherName]?.toString().trim() ?? '',
@@ -292,5 +301,26 @@ class Employee {
             .replaceAll(RegExp(r'\s+'), '')
             .trim() ??
         '';
+  }
+
+  /// Cleans an EHRMS field value.
+  ///
+  /// EHRMS IDs are long integers (e.g. 12345678901).
+  /// Google Sheets stores them as numbers, so the CSV may deliver them as:
+  ///   - Float string:       "12345678901.0"
+  ///   - Scientific notation: "1.23456789E+10"
+  ///   - Plain string:       "12345678901"
+  ///
+  /// Unlike [_clean], this never does a blanket `.replaceAll('.0', '')`
+  /// because that can corrupt values like "10200456.0" → "102004560" wrong trim.
+  static String _cleanEhrms(dynamic value) {
+    if (value == null) return '';
+    final s = value.toString().trim();
+    if (s.isEmpty) return '';
+    // Try parsing as a number (handles scientific notation and floats)
+    final n = num.tryParse(s);
+    if (n != null) return n.toInt().toString();
+    // Not numeric — return as-is (e.g. alphanumeric EHRMS codes)
+    return s;
   }
 }

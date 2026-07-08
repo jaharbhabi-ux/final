@@ -117,6 +117,10 @@ class AppConstants {
   static const String keyFromDate = 'कब से';
   static const String keyToDate = 'कब तक';
   static const String keyEHRMS = 'E.HRMS';
+  // Fallback header variants seen in some sheet exports
+  static const String keyEHRMSAlt1 = 'EHRMS';
+  static const String keyEHRMSAlt2 = 'E-HRMS';
+  static const String keyEHRMSAlt3 = 'E HRMS';
 
   // Aagman / Prasthan keys
   static const String keySerialNo = 'क्र0 सं0';
