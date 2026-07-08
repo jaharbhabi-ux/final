@@ -60,13 +60,13 @@ class SectionCard extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 5, 8, 3),
                 child: Row(
                   children: [
-                    Icon(icon, size: 13, color: color),
+                    Icon(icon, size: 14, color: color),
                     const SizedBox(width: 5),
                     Expanded(
                       child: Text(
                         title,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.textPrimary,
                           letterSpacing: 0.1,

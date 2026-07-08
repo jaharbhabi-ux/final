@@ -7,7 +7,6 @@ import '../../widgets/dashboard/up_stat_card.dart';
 import '../../widgets/dashboard/up_employee_card.dart';
 import '../profile/profile_screen.dart';
 import '../transfer_classification_page.dart';
-import 'quick_entry_dialog.dart';
 
 /// Dashboard - landing screen.
 ///
@@ -148,8 +147,6 @@ class _DashboardScreenState extends State<DashboardScreen>
                       const SizedBox(height: 10),
                       _buildTransferCategories(),
                       const SizedBox(height: 10),
-                      _buildQuickEntryButton(),
-                      const SizedBox(height: 10),
                       if (state.isLoading)
                         const Align(
                           alignment: Alignment.center,
@@ -200,9 +197,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
                 const SizedBox(height: 1),
                   Text(
-                    'प्रधान लिपिक शाखा जनपद बरेली',
-                    style: TextStyle(
-                    fontSize: 11,
+                  'प्रधान लिपिक शाखा जनपद बरेली',
+                  style: TextStyle(
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.accentGold,
                     height: 1.2,
@@ -243,7 +240,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   hintText: 'PNO, बैज नं0 या नाम दर्ज करें (Enter दबाएँ)',
                   hintStyle: TextStyle(
                     color: AppTheme.textHint,
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
                   border: InputBorder.none,
@@ -259,10 +256,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                   }
                   // Smart search: pure digits ? route by length
                   if (RegExp(r'^\d+$').hasMatch(trimmed)) {
-                    if (trimmed.length <= 4) {
-                      context.read<EmployeeProvider>().searchEmployeeByField(trimmed, 'badge');
-                    } else {
+                    if (trimmed.length > 5) {
                       context.read<EmployeeProvider>().searchEmployeeByField(trimmed, 'pno');
+                    } else {
+                      context.read<EmployeeProvider>().searchEmployeeByField(trimmed, 'badge');
                     }
                   } else {
                     context.read<EmployeeProvider>().searchEmployee(trimmed);
@@ -301,7 +298,17 @@ class _DashboardScreenState extends State<DashboardScreen>
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final crossCount = width > 700 ? 4 : 2;
+        final crossCount = width > 1100
+            ? 7
+            : width > 850
+                ? 6
+                : width > 650
+                    ? 5
+                    : width > 480
+                        ? 4
+                        : width > 360
+                            ? 3
+                            : 2;
         final cardWidth = (width - (crossCount - 1) * 6) / crossCount;
         final cards = <Widget>[
           Selector<EmployeeProvider, int>(
@@ -385,45 +392,81 @@ class _DashboardScreenState extends State<DashboardScreen>
         const Padding(
           padding: EdgeInsets.only(left: 2, bottom: 4),
           child: Text(
-            'आगमन वर्गीकरण',
+            'आगमन / प्रस्थान वर्गीकरण',
             style: TextStyle(
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               color: AppTheme.textPrimary,
             ),
           ),
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _transferButton('मुख्यालय', 'DG', true, AppTheme.infoColor),
-            const SizedBox(width: 6),
-            _transferButton('ज़ोन', 'BJD', true, AppTheme.infoColor),
-            const SizedBox(width: 6),
-            _transferButton('परिक्षेत्र', 'BR', true, AppTheme.infoColor),
-          ],
-        ),
-        const SizedBox(height: 8),
-        const Padding(
-          padding: EdgeInsets.only(left: 2, bottom: 4),
-          child: Text(
-            'प्रस्थान वर्गीकरण',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: AppTheme.textPrimary,
+            _buildTransferGroup(
+              isAagman: true,
+              color: AppTheme.infoColor,
+              title: 'आगमन',
             ),
-          ),
-        ),
-        Row(
-          children: [
-            _transferButton('मुख्यालय', 'DG', false, AppTheme.warningColor),
-            const SizedBox(width: 6),
-            _transferButton('ज़ोन', 'BJD', false, AppTheme.warningColor),
-            const SizedBox(width: 6),
-            _transferButton('परिक्षेत्र', 'BR', false, AppTheme.warningColor),
+            const SizedBox(width: 8),
+            _buildTransferGroup(
+              isAagman: false,
+              color: AppTheme.warningColor,
+              title: 'प्रस्थान',
+            ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildTransferGroup({
+    required bool isAagman,
+    required Color color,
+    required String title,
+  }) {
+    const categories = [
+      ('मुख्यालय', 'DG'),
+      ('ज़ोन', 'BJD'),
+      ('परिक्षेत्र', 'BR'),
+    ];
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.07),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: color.withOpacity(0.35), width: 1),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: color,
+                letterSpacing: 0.3,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                for (int i = 0; i < categories.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 4),
+                  _transferButton(
+                    categories[i].$1,
+                    categories[i].$2,
+                    isAagman,
+                    color,
+                  ),
+                ],
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -450,7 +493,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         builder: (context, count, _) {
           return AppTheme.glassContainer(
             borderRadius: 10,
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
             child: InkWell(
               onTap: () {
                 final prefix = _prefixFor(category);
@@ -459,7 +502,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                   context,
                   MaterialPageRoute(
                     builder: (_) => TransferClassificationPage(
-                      title: '${isAagman ? 'ज़ोन' : 'प्रस्थान'} - $label',
+                      title: '${isAagman ? 'आगमन' : 'प्रस्थान'} - $label',
                       isAagman: isAagman,
                       prefix: prefix,
                     ),
@@ -478,7 +521,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                     child: Text(
                       label,
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: color,
                         height: 1.2,
@@ -505,30 +548,6 @@ class _DashboardScreenState extends State<DashboardScreen>
             ),
           );
         },
-      ),
-    );
-  }
-
-  // ─── QUICK ENTRY BUTTON ────────────────────────────────────────
-  Widget _buildQuickEntryButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton.icon(
-        onPressed: () async {
-          await QuickEntryDialog.show(context);
-        },
-        icon: const Icon(Icons.note_add_rounded, size: 18),
-        label: const Text(
-          'HOB / मूल वेतन त्वरित एंट्री',
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.accentGold,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          elevation: 0,
-        ),
       ),
     );
   }
@@ -586,27 +605,35 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
             ),
             const SizedBox(height: 8),
-            _buildEmployeeGrid(valid, isDesktop, isTablet),
+            _buildEmployeeGrid(valid, isDesktop, isTablet, search: true),
           ],
         );
       },
     );
   }
 
-  Widget _buildEmployeeGrid(List<Employee> employees, bool isDesktop, bool isTablet) {
-    final crossAxisCount = isDesktop ? 6 : (isTablet ? 4 : 3);
+  Widget _buildEmployeeGrid(List<Employee> employees, bool isDesktop, bool isTablet, {bool search = false}) {
+    final crossAxisCount = search
+        ? (isDesktop ? 6 : (isTablet ? 4 : 3))
+        : (isDesktop ? 11 : (isTablet ? 8 : 5));
+    final childAspectRatio = search
+        ? (isDesktop ? 2.0 : (isTablet ? 1.9 : 1.15))
+        : (isDesktop ? 2.5 : (isTablet ? 2.05 : 1.85));
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        childAspectRatio: isDesktop ? 4.0 : (isTablet ? 3.2 : 2.8),
+        childAspectRatio: childAspectRatio,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
       ),
       itemCount: employees.length,
-      itemBuilder: (context, index) =>
-          UPEmployeeCard(employee: employees[index], onTap: () => _openProfile(employees[index])),
+      itemBuilder: (context, index) => UPEmployeeCard(
+        employee: employees[index],
+        onTap: () => _openProfile(employees[index]),
+        allowWrap: search,
+      ),
     );
   }
 

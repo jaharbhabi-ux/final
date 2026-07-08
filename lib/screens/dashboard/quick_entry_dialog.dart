@@ -81,10 +81,14 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
     // Use the provider to find employee by PNO
     final provider = context.read<EmployeeProvider>();
     final all = provider.getAllEmployees();
-    final cleanPno = pno.replaceAll(RegExp(r'\s+'), '').replaceAll('.0', '').toLowerCase();
+    final cleanPno =
+        pno.replaceAll(RegExp(r'\s+'), '').replaceAll('.0', '').toLowerCase();
 
     final found = all.where((e) {
-      final epno = e.pno.replaceAll(RegExp(r'\s+'), '').replaceAll('.0', '').toLowerCase();
+      final epno = e.pno
+          .replaceAll(RegExp(r'\s+'), '')
+          .replaceAll('.0', '')
+          .toLowerCase();
       return epno.contains(cleanPno);
     }).toList();
 
@@ -99,7 +103,9 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
   Future<void> _submitHob() async {
     if (_foundEmployee == null) return;
     if (_hobNumberController.text.trim().isEmpty ||
-        _hobDateController.text.trim().isEmpty) return;
+        _hobDateController.text.trim().isEmpty) {
+      return;
+    }
 
     setState(() {
       _isSubmitting = true;
@@ -146,7 +152,9 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
   Future<void> _submitBasicPay() async {
     if (_foundEmployee == null) return;
     if (_payMonthController.text.trim().isEmpty ||
-        _payAmountController.text.trim().isEmpty) return;
+        _payAmountController.text.trim().isEmpty) {
+      return;
+    }
 
     setState(() {
       _isSubmitting = true;
@@ -209,7 +217,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.edit_note_rounded, color: Colors.white, size: 20),
+                  const Icon(Icons.edit_note_rounded,
+                      color: Colors.white, size: 20),
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
@@ -227,17 +236,23 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                       GestureDetector(
                         onTap: () => Navigator.pop(context, false),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 4),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: Row(
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.arrow_back_rounded, size: 14, color: Colors.white),
+                            children: [
+                              Icon(Icons.arrow_back_rounded,
+                                  size: 14, color: Colors.white),
                               SizedBox(width: 3),
-                              Text('वापस', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white)),
+                              Text('वापस',
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white)),
                             ],
                           ),
                         ),
@@ -245,7 +260,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                       const SizedBox(width: 6),
                       GestureDetector(
                         onTap: () => Navigator.pop(context, false),
-                        child: const Icon(Icons.close, color: Colors.white70, size: 20),
+                        child: const Icon(Icons.close,
+                            color: Colors.white70, size: 20),
                       ),
                     ],
                   )
@@ -284,12 +300,14 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                               child: SizedBox(
                                 width: 16,
                                 height: 16,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
                               ),
                             )
                           : null,
                       isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 10),
                     ),
                     keyboardType: TextInputType.number,
                   ),
@@ -300,7 +318,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                       decoration: BoxDecoration(
                         color: AppTheme.successColor.withOpacity(0.08),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppTheme.successColor.withOpacity(0.3)),
+                        border: Border.all(
+                            color: AppTheme.successColor.withOpacity(0.3)),
                       ),
                       child: Row(
                         children: [
@@ -350,7 +369,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                               ],
                             ),
                           ),
-                          const Icon(Icons.check_circle, color: AppTheme.successColor, size: 18),
+                          const Icon(Icons.check_circle,
+                              color: AppTheme.successColor, size: 18),
                         ],
                       ),
                     ),
@@ -375,7 +395,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
                 unselectedLabelColor: AppTheme.textSecondary,
-                labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                labelStyle:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
                 tabs: const [
                   Tab(text: 'HOB एंट्री'),
                   Tab(text: 'मूल वेतन एंट्री'),
@@ -412,7 +433,9 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                     Icon(
                       _submitSuccess ? Icons.check_circle : Icons.error,
                       size: 16,
-                      color: _submitSuccess ? AppTheme.successColor : AppTheme.errorColor,
+                      color: _submitSuccess
+                          ? AppTheme.successColor
+                          : AppTheme.errorColor,
                     ),
                     const SizedBox(width: 6),
                     Expanded(
@@ -421,7 +444,9 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
-                          color: _submitSuccess ? AppTheme.successColor : AppTheme.errorColor,
+                          color: _submitSuccess
+                              ? AppTheme.successColor
+                              : AppTheme.errorColor,
                         ),
                       ),
                     ),
@@ -440,12 +465,14 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
       padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
       child: Column(
         children: [
-          _field('HOB संख्या', 'जैसे: 01, 02...', _hobNumberController, enabled),
+          _field(
+              'HOB संख्या', 'जैसे: 01, 02...', _hobNumberController, enabled),
           const SizedBox(height: 8),
-          _field('दिनांक', 'DD/MM/YYYY (साल से 2025/2026 में जाएगा)', _hobDateController, enabled),
+          _field('दिनांक', 'DD/MM/YYYY (साल से 2025/2026 में जाएगा)',
+              _hobDateController, enabled),
           const SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.only(left: 4),
+          const Padding(
+            padding: EdgeInsets.only(left: 4),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -458,8 +485,7 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
           _field('विवरण', 'HOB का विवरण लिखें...', _hobDescController, enabled,
               maxLines: 3),
           const SizedBox(height: 8),
-          _field(
-              'अन्य विवरण', 'अन्य विवरण लिखें (वैकल्पिक)...',
+          _field('अन्य विवरण', 'अन्य विवरण लिखें (वैकल्पिक)...',
               _hobOtherController, enabled,
               maxLines: 2),
           const SizedBox(height: 12),
@@ -477,7 +503,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                       ),
                     )
                   : const Icon(Icons.save_rounded, size: 16),
-              label: Text(_isSubmitting ? 'जोड़ रहा है...' : 'HOB एंट्री जोड़ें'),
+              label:
+                  Text(_isSubmitting ? 'जोड़ रहा है...' : 'HOB एंट्री जोड़ें'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 10),
               ),
@@ -494,7 +521,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
       padding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
       child: Column(
         children: [
-          _field('वार्षिक वेतन वृद्धि माह', 'जैसे: जनवरी 2025, जुलाई 2025', _payMonthController, enabled),
+          _field('वार्षिक वेतन वृद्धि माह', 'जैसे: जनवरी 2025, जुलाई 2025',
+              _payMonthController, enabled),
           const SizedBox(height: 8),
           _field('मूल वेतन', 'राशि लिखें...', _payAmountController, enabled,
               keyboardType: TextInputType.number),
@@ -513,7 +541,8 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
                       ),
                     )
                   : const Icon(Icons.save_rounded, size: 16),
-              label: Text(_isSubmitting ? 'जोड़ रहा है...' : 'मूल वेतन एंट्री जोड़ें'),
+              label: Text(
+                  _isSubmitting ? 'जोड़ रहा है...' : 'मूल वेतन एंट्री जोड़ें'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 10),
               ),
@@ -552,9 +581,11 @@ class _QuickEntryDialogState extends State<QuickEntryDialog>
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(fontSize: 11, color: AppTheme.textHint.withOpacity(0.8)),
+            hintStyle: TextStyle(
+                fontSize: 11, color: AppTheme.textHint.withOpacity(0.8)),
             isDense: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
           ),
         ),
       ],

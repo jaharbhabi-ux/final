@@ -9,56 +9,101 @@ class AppTheme {
   // ──────────────────────────────────────────────
   // 🎨 Color Palette
   // ──────────────────────────────────────────────
-  static const Color primaryColor   = Color(0xFF1A56DB); // Vibrant Blue
+  static const Color primaryColor = Color(0xFF1A56DB); // Vibrant Blue
   static const Color secondaryColor = Color(0xFF3B82F6); // Bright Blue
-  static const Color primaryDark    = Color(0xFF1E3A8A); // Deep Navy
-  static const Color accentGold     = Color(0xFFF59E0B); // Warm Gold
-  static const Color accentPurple   = Color(0xFF7C3AED); // Purple
-  static const Color accentTeal     = Color(0xFF06B6D4); // Teal
+  static const Color primaryDark = Color(0xFF1E3A8A); // Deep Navy
+  static const Color accentGold = Color(0xFFF59E0B); // Warm Gold
+  static const Color accentPurple = Color(0xFF7C3AED); // Purple
+  static const Color accentTeal = Color(0xFF06B6D4); // Teal
 
   // Surfaces — kept light so text on cards stays readable
-  static const Color backgroundColor = Color(0xFF0F1B3D); // deep navy (scaffold behind glass)
-  static const Color surfaceColor    = Color(0xFFF8FAFC);
-  static const Color cardColor       = Colors.white;
-  static const Color borderColor     = Color(0xFFCBD5E1);
+  static const Color backgroundColor =
+      Color(0xFF0F1B3D); // deep navy (scaffold behind glass)
+  static const Color surfaceColor = Color(0xFFF8FAFC);
+  static const Color cardColor = Colors.white;
+  static const Color borderColor = Color(0xFFCBD5E1);
 
   // Glass helpers
-  static const Color glassWhite  = Color(0x0AFFFFFF);
-  static const Color glassLight  = Color(0x14FFFFFF);
+  static const Color glassWhite = Color(0x0AFFFFFF);
+  static const Color glassLight = Color(0x14FFFFFF);
   static const Color glassMedium = Color(0x1FFFFFFF);
-  static const Color glassCard   = Colors.white;
+  static const Color glassCard = Colors.white;
 
   // Text — dark, for use on white/glass cards
-  static const Color textPrimary   = Color(0xFF0F172A);
+  static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF475569);
-  static const Color textHint      = Color(0xFF94A3B8);
+  static const Color textHint = Color(0xFF94A3B8);
   static const Color sectionHeader = Color(0xFF1A56DB);
 
   // Status
   static const Color successColor = Color(0xFF10B981);
   static const Color warningColor = Color(0xFFF59E0B);
-  static const Color errorColor   = Color(0xFFEF4444);
-  static const Color infoColor    = Color(0xFF3B82F6);
+  static const Color errorColor = Color(0xFFEF4444);
+  static const Color infoColor = Color(0xFF3B82F6);
 
   // ──────────────────────────────────────────────
   // 📐 Typography
   // ──────────────────────────────────────────────
-  static TextStyle get heading1 => const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: textPrimary, letterSpacing: 0.3, height: 1.2);
-  static TextStyle get heading2 => const TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: textPrimary, height: 1.3);
-  static TextStyle get heading3 => const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: textPrimary, height: 1.3);
-  static TextStyle get subtitle1 => const TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: textPrimary, height: 1.4);
-  static TextStyle get subtitle2 => const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: textSecondary, height: 1.4);
-  static TextStyle get bodyText1 => const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: textPrimary, height: 1.5);
-  static TextStyle get bodyText2 => const TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: textPrimary, height: 1.5);
-  static TextStyle get caption   => const TextStyle(fontSize: 11, fontWeight: FontWeight.w400, color: textSecondary, height: 1.4);
-  static TextStyle get statNumber => const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: textPrimary, height: 1.1);
-  static TextStyle get statLabel  => const TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: textSecondary, height: 1.2);
+  static TextStyle get heading1 => const TextStyle(
+      fontSize: 26,
+      fontWeight: FontWeight.w700,
+      color: textPrimary,
+      letterSpacing: 0.3,
+      height: 1.2);
+  static TextStyle get heading2 => const TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w700,
+      color: textPrimary,
+      height: 1.3);
+  static TextStyle get heading3 => const TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: textPrimary,
+      height: 1.3);
+  static TextStyle get subtitle1 => const TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: textPrimary,
+      height: 1.4);
+  static TextStyle get subtitle2 => const TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w500,
+      color: textSecondary,
+      height: 1.4);
+  static TextStyle get bodyText1 => const TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: textPrimary,
+      height: 1.5);
+  static TextStyle get bodyText2 => const TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w400,
+      color: textPrimary,
+      height: 1.5);
+  static TextStyle get caption => const TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w400,
+      color: textSecondary,
+      height: 1.4);
+  static TextStyle get statNumber => const TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w800,
+      color: textPrimary,
+      height: 1.1);
+  static TextStyle get statLabel => const TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: textSecondary,
+      height: 1.2);
 
   // ──────────────────────────────────────────────
   // 🌐 Locale
   // ──────────────────────────────────────────────
-  static const Locale hindiLocale       = Locale('hi', 'IN');
-  static const List<Locale> supportedLocales = [hindiLocale, Locale('en', 'US')];
+  static const Locale hindiLocale = Locale('hi', 'IN');
+  static const List<Locale> supportedLocales = [
+    hindiLocale,
+    Locale('en', 'US')
+  ];
 
   // ──────────────────────────────────────────────
   // 🎨 Gradients
@@ -101,7 +146,7 @@ class AppTheme {
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
       surface: surfaceColor,
@@ -114,7 +159,11 @@ class AppTheme {
       elevation: 0,
       centerTitle: true,
       surfaceTintColor: Colors.transparent,
-      titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white, letterSpacing: 0.3),
+      titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          letterSpacing: 0.3),
     ),
     cardTheme: CardThemeData(
       color: cardColor,
@@ -141,10 +190,18 @@ class AppTheme {
       filled: true,
       fillColor: Colors.white.withOpacity(0.92),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: borderColor)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: borderColor)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primaryColor, width: 2)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: errorColor)),
+      border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: borderColor)),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: borderColor)),
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor, width: 2)),
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: errorColor)),
       hintStyle: const TextStyle(fontSize: 14, color: textHint),
       labelStyle: const TextStyle(fontSize: 13, color: textSecondary),
     ),
@@ -159,14 +216,17 @@ class AppTheme {
       bodyMedium: bodyText2,
       bodySmall: caption,
     ),
-    dividerTheme: DividerThemeData(color: borderColor, thickness: 1, space: 1),
+    dividerTheme:
+        const DividerThemeData(color: borderColor, thickness: 1, space: 1),
     chipTheme: ChipThemeData(
       backgroundColor: primaryColor.withOpacity(0.08),
-      labelStyle: const TextStyle(fontSize: 12, color: primaryColor, fontWeight: FontWeight.w600),
+      labelStyle: const TextStyle(
+          fontSize: 12, color: primaryColor, fontWeight: FontWeight.w600),
       side: BorderSide.none,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryColor, linearTrackColor: borderColor),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: primaryColor, linearTrackColor: borderColor),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       backgroundColor: textPrimary,
@@ -179,10 +239,18 @@ class AppTheme {
   // 📅 Hindi Date Formatting
   // ──────────────────────────────────────────────
   static const Map<String, String> hindiMonths = {
-    '01': 'जनवरी', '02': 'फरवरी',  '03': 'मार्च',
-    '04': 'अप्रैल','05': 'मई',      '06': 'जून',
-    '07': 'जुलाई', '08': 'अगस्त',  '09': 'सितंबर',
-    '10': 'अक्टूबर','11': 'नवंबर', '12': 'दिसंबर',
+    '01': 'जनवरी',
+    '02': 'फरवरी',
+    '03': 'मार्च',
+    '04': 'अप्रैल',
+    '05': 'मई',
+    '06': 'जून',
+    '07': 'जुलाई',
+    '08': 'अगस्त',
+    '09': 'सितंबर',
+    '10': 'अक्टूबर',
+    '11': 'नवंबर',
+    '12': 'दिसंबर',
   };
 
   // ──────────────────────────────────────────────
@@ -247,27 +315,53 @@ class AppTheme {
   // ──────────────────────────────────────────────
   static IconData iconForField(String key) {
     final lower = key.toLowerCase();
-    if (lower.contains('पीएनओ') || lower.contains('pno')) return Icons.badge_rounded;
-    if (lower.contains('नाम') && !lower.contains('पिता') && !lower.contains('नामिनी')) return Icons.person_rounded;
+    if (lower.contains('पीएनओ') || lower.contains('pno'))
+      return Icons.badge_rounded;
+    if (lower.contains('नाम') &&
+        !lower.contains('पिता') &&
+        !lower.contains('नामिनी')) return Icons.person_rounded;
     if (lower.contains('पिता')) return Icons.people_rounded;
-    if (lower.contains('मोबाइल') || lower.contains('mobile')) return Icons.phone_rounded;
-    if (lower.contains('जन्म') || lower.contains('dob') || lower.contains('तिथि')) return Icons.calendar_month_rounded;
-    if (lower.contains('गृह') || lower.contains('जनपद') || lower.contains('district') || lower.contains('तैनाती') || lower.contains('posting')) return Icons.location_on_rounded;
-    if (lower.contains('योग्यता') || lower.contains('qualification')) return Icons.school_rounded;
-    if (lower.contains('पद') && !lower.contains('posting')) return Icons.work_rounded;
-    if (lower.contains('बैज') || lower.contains('badge')) return Icons.verified_rounded;
-    if (lower.contains('जाति') || lower.contains('cast')) return Icons.category_rounded;
-    if (lower.contains('भर्ती') || lower.contains('recruit')) return Icons.how_to_reg_rounded;
-    if (lower.contains('नामिनी') || lower.contains('nominee')) return Icons.contact_emergency_rounded;
-    if (lower.contains('पदक') || lower.contains('medal') || lower.contains('पुरूष्कार')) return Icons.emoji_events_rounded;
-    if (lower.contains('विवरण') || lower.contains('detail')) return Icons.description_rounded;
-    if (lower.contains('पदोन्नति') || lower.contains('promotion')) return Icons.trending_up_rounded;
-    if (lower.contains('पता') || lower.contains('address')) return Icons.home_rounded;
-    if (lower.contains('दण्ड') || lower.contains('punishment')) return Icons.gavel_rounded;
+    if (lower.contains('मोबाइल') || lower.contains('mobile'))
+      return Icons.phone_rounded;
+    if (lower.contains('जन्म') ||
+        lower.contains('dob') ||
+        lower.contains('तिथि')) return Icons.calendar_month_rounded;
+    if (lower.contains('गृह') ||
+        lower.contains('जनपद') ||
+        lower.contains('district') ||
+        lower.contains('तैनाती') ||
+        lower.contains('posting')) return Icons.location_on_rounded;
+    if (lower.contains('योग्यता') || lower.contains('qualification'))
+      return Icons.school_rounded;
+    if (lower.contains('पद') && !lower.contains('posting'))
+      return Icons.work_rounded;
+    if (lower.contains('बैज') || lower.contains('badge'))
+      return Icons.verified_rounded;
+    if (lower.contains('जाति') || lower.contains('cast'))
+      return Icons.category_rounded;
+    if (lower.contains('भर्ती') || lower.contains('recruit'))
+      return Icons.how_to_reg_rounded;
+    if (lower.contains('नामिनी') || lower.contains('nominee'))
+      return Icons.contact_emergency_rounded;
+    if (lower.contains('पदक') ||
+        lower.contains('medal') ||
+        lower.contains('पुरूष्कार')) return Icons.emoji_events_rounded;
+    if (lower.contains('विवरण') || lower.contains('detail'))
+      return Icons.description_rounded;
+    if (lower.contains('पदोन्नति') || lower.contains('promotion'))
+      return Icons.trending_up_rounded;
+    if (lower.contains('पता') || lower.contains('address'))
+      return Icons.home_rounded;
+    if (lower.contains('दण्ड') || lower.contains('punishment'))
+      return Icons.gavel_rounded;
     if (lower.contains('सत्यनिष्ठा')) return Icons.verified_user_rounded;
-    if (lower.contains('नगद') || lower.contains('cash')) return Icons.card_giftcard_rounded;
-    if (lower.contains('गुड') || lower.contains('good')) return Icons.star_rounded;
-    if (lower.contains('पूर्व') || lower.contains('previous') || lower.contains('नियुक्ति')) return Icons.history_rounded;
+    if (lower.contains('नगद') || lower.contains('cash'))
+      return Icons.card_giftcard_rounded;
+    if (lower.contains('गुड') || lower.contains('good'))
+      return Icons.star_rounded;
+    if (lower.contains('पूर्व') ||
+        lower.contains('previous') ||
+        lower.contains('नियुक्ति')) return Icons.history_rounded;
     if (lower.contains('ehrms')) return Icons.fingerprint_rounded;
     return Icons.info_outline_rounded;
   }

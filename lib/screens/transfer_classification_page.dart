@@ -87,8 +87,7 @@ class TransferClassificationPage extends StatelessWidget {
                               padding: const EdgeInsets.all(16),
                               child: Icon(Icons.search_off_rounded,
                                   size: 32,
-                                  color: AppTheme.errorColor
-                                      .withOpacity(0.6)),
+                                  color: AppTheme.errorColor.withOpacity(0.6)),
                             ),
                             const SizedBox(height: 16),
                             const Text(
@@ -141,24 +140,17 @@ class TransferClassificationPage extends StatelessWidget {
       final record = records[i];
       if (record is! Aagman && record is! Prasthan) continue;
       final isArrival = record is Aagman;
-      final String pno = isArrival
-          ? (record as Aagman).pno
-          : (record as Prasthan).pno;
-      final String employeeName = isArrival
-          ? (record as Aagman).employeeName
-          : (record as Prasthan).employeeName;
-      final String orderNumber = isArrival
-          ? (record as Aagman).orderNumber
-          : (record as Prasthan).orderNumber;
-      final String fileNumber = isArrival
-          ? (record as Aagman).fileNumber
-          : (record as Prasthan).fileNumber;
-      final String fromWhere = isArrival
-          ? (record as Aagman).fromWhere
-          : (record as Prasthan).fromWhere;
-      final String toWhere = isArrival
-          ? (record as Aagman).toWhere
-          : (record as Prasthan).toWhere;
+      final String pno = isArrival ? (record).pno : (record as Prasthan).pno;
+      final String employeeName =
+          isArrival ? (record).employeeName : (record as Prasthan).employeeName;
+      final String orderNumber =
+          isArrival ? (record).orderNumber : (record as Prasthan).orderNumber;
+      final String fileNumber =
+          isArrival ? (record).fileNumber : (record as Prasthan).fileNumber;
+      final String fromWhere =
+          isArrival ? (record).fromWhere : (record as Prasthan).fromWhere;
+      final String toWhere =
+          isArrival ? (record).toWhere : (record as Prasthan).toWhere;
       rows.add([
         '${i + 1}',
         pno,
@@ -205,16 +197,16 @@ class TransferClassificationPage extends StatelessWidget {
           AppTheme.glassContainer(
             borderRadius: 20,
             padding: const EdgeInsets.all(36),
-            child: Column(
+            child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator(
+                CircularProgressIndicator(
                   valueColor:
                       AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
                   strokeWidth: 3,
                 ),
-                const SizedBox(height: 20),
-                const Text(
+                SizedBox(height: 20),
+                Text(
                   'डेटा लोड हो रहा है...',
                   style: TextStyle(
                     fontSize: 15,
@@ -222,8 +214,8 @@ class TransferClassificationPage extends StatelessWidget {
                     color: AppTheme.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 6),
-                const Text(
+                SizedBox(height: 6),
+                Text(
                   'कर्मचारी प्रबंधन प्रणाली',
                   style: TextStyle(
                     fontSize: 13,

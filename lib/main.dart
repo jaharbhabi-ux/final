@@ -109,12 +109,12 @@ class _InitialLoading extends StatelessWidget {
                 borderRadius: 20,
                 blurSigma: 16,
                 padding: const EdgeInsets.all(40),
-                child: Column(
+                child: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const UPPoliceBadge(size: 64),
-                    const SizedBox(height: 28),
-                    const SizedBox(
+                    UPPoliceBadge(size: 64),
+                    SizedBox(height: 28),
+                    SizedBox(
                       width: 36,
                       height: 36,
                       child: CircularProgressIndicator(
@@ -124,8 +124,8 @@ class _InitialLoading extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
+                    SizedBox(height: 24),
+                    Text(
                       'डेटा लोड हो रहा है...',
                       style: TextStyle(
                         fontSize: 18,
@@ -134,8 +134,8 @@ class _InitialLoading extends StatelessWidget {
                         letterSpacing: 0.3,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'कर्मचारी प्रबंधन प्रणाली',
                       style: TextStyle(
                         fontSize: 13,

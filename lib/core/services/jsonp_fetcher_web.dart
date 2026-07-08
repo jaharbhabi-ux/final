@@ -5,6 +5,8 @@
 /// We ask it to use a custom callback name via `tqx=responseHandler:...`,
 /// then register that function globally and inject a <script> tag.
 /// Since <script> tags are not subject to CORS, this always works.
+library;
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
@@ -81,8 +83,7 @@ class JsonpFetcher {
     // never serves a cached <script> response — same reason as the HTTP
     // path in GSheetDataSource.
     final bust = DateTime.now().millisecondsSinceEpoch;
-    final url =
-        '$gsheetsBaseUrl/$spreadsheetId/gviz/tq'
+    final url = '$gsheetsBaseUrl/$spreadsheetId/gviz/tq'
         '?gid=$gid&tqx=out:json;responseHandler:$cbName&_=$bust';
 
     // Create and inject the <script> tag.

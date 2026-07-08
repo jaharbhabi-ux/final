@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
 import 'package:http/http.dart' as http;
-import 'package:csv/csv.dart' as csv;
 import '../constants/app_constants.dart';
-import 'jsonp_fetcher_stub.dart'
-    if (dart.library.html) 'jsonp_fetcher_web.dart' as jsonp;
+import 'jsonp_fetcher_stub.dart' if (dart.library.html) 'jsonp_fetcher_web.dart'
+    as jsonp;
 
 /// Google Sheets Data Source
 ///
@@ -91,16 +89,16 @@ class GSheetDataSource {
   /// text looks identical.
   String _normalizeKey(String key) {
     return key
-        .replaceAll('\uFEFF', '')   // BOM
-        .replaceAll('\u200B', '')   // Zero-width space
-        .replaceAll('\u200C', '')   // Zero-width non-joiner
-        .replaceAll('\u200D', '')   // Zero-width joiner
-        .replaceAll('\u2060', '')   // Word joiner
-        .replaceAll('\u00A0', ' ')  // Non-breaking space â†’ regular space
-        .replaceAll('\u202F', ' ')  // Narrow no-break space
-        .replaceAll('\u2009', ' ')  // Thin space
-        .replaceAll('\u200A', ' ')  // Hair space
-        .replaceAll('\u2800', '')   // Braille pattern blank
+        .replaceAll('\uFEFF', '') // BOM
+        .replaceAll('\u200B', '') // Zero-width space
+        .replaceAll('\u200C', '') // Zero-width non-joiner
+        .replaceAll('\u200D', '') // Zero-width joiner
+        .replaceAll('\u2060', '') // Word joiner
+        .replaceAll('\u00A0', ' ') // Non-breaking space â†’ regular space
+        .replaceAll('\u202F', ' ') // Narrow no-break space
+        .replaceAll('\u2009', ' ') // Thin space
+        .replaceAll('\u200A', ' ') // Hair space
+        .replaceAll('\u2800', '') // Braille pattern blank
         .trim();
   }
 
@@ -122,6 +120,13 @@ class GSheetDataSource {
     final List<String> currentRow = <String>[];
     final StringBuffer currentCell = StringBuffer();
     bool inQuotes = false;
+    // Once the first non-blank (header) row is seen, subsequent blank rows
+    // are PRESERVED. These act as section separators (live data → blank row
+    // → archived section) in sheets like Aagman / Prasthan. The repository's
+    // _takeUntilFirstBlankRow() relies on them to stop counting. Leading
+    // blank rows (before the header) are still dropped so the header stays
+    // correct.
+    bool headerSeen = false;
     int i = 0;
 
     while (i < csvData.length) {
@@ -165,6 +170,10 @@ class GSheetDataSource {
         currentCell.clear();
         if (currentRow.any((s) => s.isNotEmpty)) {
           allRows.add(List<String>.from(currentRow));
+          headerSeen = true;
+        } else if (headerSeen) {
+          // Preserve mid/end-of-sheet blank rows as section separators.
+          allRows.add(List<String>.from(currentRow));
         }
         currentRow.clear();
         i++;
@@ -178,6 +187,9 @@ class GSheetDataSource {
     if (currentCell.isNotEmpty || currentRow.isNotEmpty) {
       currentRow.add(currentCell.toString().trim());
       if (currentRow.any((s) => s.isNotEmpty)) {
+        allRows.add(List<String>.from(currentRow));
+        headerSeen = true;
+      } else if (headerSeen) {
         allRows.add(List<String>.from(currentRow));
       }
     }
@@ -194,7 +206,8 @@ class GSheetDataSource {
       print('[PARSE] tokenized ${allRows.length} rows, ${headers.length} cols');
       for (int h = 0; h < headers.length && h < 5; h++) {
         final codes = headers[h].codeUnits.take(20).toList();
-        print('[PARSE] header[$h] = ${jsonEncode(headers[h])}  codeUnits=$codes');
+        print(
+            '[PARSE] header[$h] = ${jsonEncode(headers[h])}  codeUnits=$codes');
       }
     }
 
@@ -210,10 +223,12 @@ class GSheetDataSource {
         // This is the correct behavior for Google Sheets CSV exports.
         map[h] = c < row.length ? row[c] : '';
       }
-      // Only add rows that have at least one non-empty value
-      if (map.values.any((v) => v.toString().trim().isNotEmpty)) {
-        out.add(map);
-      }
+      // Keep every row, INCLUDING blank ones that act as section separators
+      // (live data → blank row → archived section). The repository's
+      // _takeUntilFirstBlankRow() stops counting at the first fully-blank
+      // row; leading blank rows were already dropped during tokenization so
+      // the header row (allRows[0]) is always the real header.
+      out.add(map);
     }
 
     return out;

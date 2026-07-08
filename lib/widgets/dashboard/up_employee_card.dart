@@ -6,15 +6,20 @@ import '../../core/core.dart';
 /// Shows: avatar initial, name, PNO, badge (if present), post (if present),
 /// and a colored dot indicating active/inactive status.
 ///
+/// When [allowWrap] is true (used for focused search results), the card is
+/// rendered larger with no ellipsis so the full name / details are visible.
+///
 /// `const`-friendly — depends only on the [employee] passed in.
 class UPEmployeeCard extends StatelessWidget {
   final Employee employee;
   final VoidCallback? onTap;
+  final bool allowWrap;
 
   const UPEmployeeCard({
     super.key,
     required this.employee,
     this.onTap,
+    this.allowWrap = false,
   });
 
   @override
@@ -31,80 +36,78 @@ class UPEmployeeCard extends StatelessWidget {
         hoverColor: AppTheme.secondaryColor.withOpacity(0.05),
         splashColor: AppTheme.secondaryColor.withOpacity(0.1),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: Row(
-            children: [
-              // Avatar
-              Container(
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  gradient: AppTheme.primaryGradient,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: Text(
-                    employee.name.isNotEmpty ? employee.name[0].toUpperCase() : '?',
-                    style: const TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+        padding: EdgeInsets.symmetric(
+          horizontal: allowWrap ? 12 : 8,
+          vertical: allowWrap ? 8 : 3,
+        ),
+        child: Row(
+          crossAxisAlignment: allowWrap ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          children: [
+            // Avatar
+            Container(
+              width: allowWrap ? 30 : 22,
+              height: allowWrap ? 30 : 22,
+              decoration: BoxDecoration(
+                gradient: AppTheme.primaryGradient,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Center(
+                child: Text(
+                  employee.name.isNotEmpty ? employee.name[0].toUpperCase() : '?',
+                  style: TextStyle(
+                    fontSize: allowWrap ? 13 : 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            ),
+            SizedBox(width: allowWrap ? 10 : 6),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayName,
+                    style: TextStyle(
+                      fontSize: allowWrap ? 14 : 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimary,
+                      height: 1.2,
+                    ),
+                    maxLines: allowWrap ? 2 : 1,
+                    overflow: allowWrap ? TextOverflow.visible : TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 3),
+                  // PNO + बैज on a single line to keep the card compact
+                  Text(
+                    'PNO: ${employee.pno}${employee.badgeNumber.isNotEmpty ? '  •  बैज: ${employee.badgeNumber}' : ''}',
+                    style: TextStyle(
+                      fontSize: allowWrap ? 12 : 10,
+                      fontWeight: FontWeight.w500,
+                      color: AppTheme.textSecondary,
+                      height: 1.2,
+                    ),
+                    maxLines: allowWrap ? 2 : 1,
+                    overflow: allowWrap ? TextOverflow.visible : TextOverflow.ellipsis,
+                  ),
+                  if (allowWrap && employee.post.isNotEmpty) ...[
+                    const SizedBox(height: 3),
                     Text(
-                      displayName,
+                      employee.post,
                       style: const TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
-                        height: 1.15,
+                        color: AppTheme.textHint,
+                        height: 1.2,
                       ),
                       maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.visible,
                     ),
-                    // PNO and Badge — each on its own line so badge is always visible
-                    Text(
-                      'PNO: ${employee.pno}',
-                      style: const TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w500,
-                        color: AppTheme.textSecondary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (employee.badgeNumber.isNotEmpty)
-                      Text(
-                        'बैज: ${employee.badgeNumber}',
-                        style: const TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.secondaryColor,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    if (employee.post.isNotEmpty)
-                      Text(
-                        employee.post,
-                        style: const TextStyle(
-                          fontSize: 9,
-                          color: AppTheme.textHint,
-                          height: 1.15,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
                   ],
-                ),
+                ],
               ),
+            ),
               const SizedBox(width: 4),
               // Active/inactive status — colored dot + Hindi label
               Tooltip(

@@ -308,37 +308,56 @@ class EmployeeRepository {
     return out;
   }
 
-  /// Aagman rows up to the first completely blank line.
-  /// The source sheet may have archived sections below a blank row; those
-  /// are ignored for dashboard counts. A row is "blank" only when PNO,
-  /// employee name, AND order number are all empty.
+  /// Aagman rows up to the first section break.
+  ///
+  /// The live (current) data is the first contiguous block of rows that each
+  /// have a numeric PNO. Live Aagman PNOs are always numeric, so the FIRST
+  /// row whose PNO is missing or non-numeric marks the start of an archived
+  /// section and counting stops there. The separator in the live sheet is a
+  /// repeated header row such as `नाम | आदेश सं0 व दिनांक | ...` (PNO cell
+  /// empty) — note it is NOT a fully blank row, so we key off "PNO is not
+  /// numeric" rather than on a blank line. Leading blank / header rows (before
+  /// the first real data row) are skipped.
   List<Aagman> getValidAagman() {
     final all = getAllAagman();
     final out = <Aagman>[];
+    bool foundData = false;
     for (final a in all) {
-      if (a.pno.trim().isEmpty &&
-          a.employeeName.trim().isEmpty &&
-          a.orderNumber.trim().isEmpty) {
-        break;
+      final isDataRow = _isNumericPno(a.pno.trim());
+      if (foundData && !isDataRow) break; // archived section → stop counting
+      if (!foundData) {
+        if (!isDataRow) continue; // leading blank / header row
+        foundData = true;
       }
       out.add(a);
     }
     return out;
   }
 
-  /// Prasthan rows up to the first completely blank line.
+  /// Prasthan rows up to the first section break. See [getValidAagman].
   List<Prasthan> getValidPrasthan() {
     final all = getAllPrasthan();
     final out = <Prasthan>[];
+    bool foundData = false;
     for (final p in all) {
-      if (p.pno.trim().isEmpty &&
-          p.employeeName.trim().isEmpty &&
-          p.orderNumber.trim().isEmpty) {
-        break;
+      final isDataRow = _isNumericPno(p.pno.trim());
+      if (foundData && !isDataRow) break; // archived section → stop counting
+      if (!foundData) {
+        if (!isDataRow) continue; // leading blank / header row
+        foundData = true;
       }
       out.add(p);
     }
     return out;
+  }
+
+  /// True only if [s] is a pure numeric identifier (digits, ignoring a
+  /// trailing '.0' from CSV number formatting). Used to tell real data
+  /// rows (numeric PNO) apart from header/title rows (text PNO).
+  static bool _isNumericPno(String s) {
+    final v = s.replaceAll('.0', '').replaceAll(RegExp(r'\s+'), '').trim();
+    if (v.isEmpty) return false;
+    return v.runes.every((r) => r >= 0x30 && r <= 0x39);
   }
   int get aagmanCount => getValidAagman().length;
   int get prasthanCount => getValidPrasthan().length;

@@ -21,12 +21,12 @@ class UPStatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppTheme.glassContainer(
       borderRadius: 12,
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 40, minWidth: 65),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 38, minWidth: 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -42,7 +42,7 @@ class UPStatCard extends StatelessWidget {
                     Text(
                       label,
                       style: const TextStyle(
-                        fontSize: 10,
+                        fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
                         height: 1.2,

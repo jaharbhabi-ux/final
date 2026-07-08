@@ -229,11 +229,28 @@ class EmployeeProvider extends ChangeNotifier {
       print('');
     }
 
+    // Proper (non-fuzzy) matching:
+    //   • badge  → exact equality (badge numbers are short & unique)
+    //   • pno    → prefix match   (PNOs are long; typing the leading
+    //              digits returns the single correct employee instead
+    //              of dozens of "similar" substring hits)
+    // This replaces the old `.contains()` behaviour that returned too
+    // many approximate results.
+    final q = trimmed.replaceAll('.0', '').replaceAll(RegExp(r'\s+'), '').toLowerCase();
     _searchResults = all.where((emp) {
-      final value = field == 'badge'
-          ? emp.badgeNumber.replaceAll('.0', '').trim()
-          : emp.pno.replaceAll('.0', '').trim();
-      return value.contains(trimmed);
+      if (field == 'badge') {
+        final v = emp.badgeNumber
+            .replaceAll('.0', '')
+            .replaceAll(RegExp(r'\s+'), '')
+            .toLowerCase();
+        return v == q;
+      } else {
+        final v = emp.pno
+            .replaceAll('.0', '')
+            .replaceAll(RegExp(r'\s+'), '')
+            .toLowerCase();
+        return v.startsWith(q);
+      }
     }).toList();
 
     if (kDebugMode) {
