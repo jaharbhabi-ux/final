@@ -6,6 +6,7 @@ import 'employee_edit_dialog.dart';
 import '../../widgets/up_police_badge.dart';
 import '../../widgets/common/up_data_table.dart';
 import '../../widgets/profile/section_card.dart';
+import '../../widgets/profile/previous_postings_table.dart';
 import '../../widgets/profile/field_tile.dart';
 import '../../widgets/profile/dashboard_awards_card.dart';
 import '../../widgets/profile/dashboard_punishment_card.dart';
@@ -846,44 +847,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                 toDateRaw: i < toLines.length ? toLines[i] : ''));
       }
     }
-    if (postings.isEmpty) {
-      return const SectionCard(
-          title: 'पूर्व नियुक्तियाँ',
-          icon: Icons.history_rounded,
-          color: AppTheme.warningColor,
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
-              child: Center(
-                  child: Text('कोई पूर्व नियुक्ति रिकॉर्ड नहीं',
-                      style:
-                          TextStyle(color: AppTheme.textHint, fontSize: 12)))));
-    }
     return SectionCard(
         title: 'पूर्व नियुक्तियाँ',
         icon: Icons.history_rounded,
         color: AppTheme.warningColor,
-        child: UPDataTable(
-            headers: const ['तैनाती', 'कब से', 'कब तक', 'अवधि'],
-            rows: postings.map((p) {
-              final toDisplay = (p.toDateRaw.isEmpty || p.isPresent)
-                  ? 'वर्तमान'
-                  : p.toDateRaw;
-              final avadhi = _computeDuration(
-                  p.fromDateRaw, toDisplay == 'वर्तमान' ? '' : p.toDateRaw);
-              return [
-                p.location,
-                p.fromDateRaw.isEmpty ? '-' : p.fromDateRaw,
-                toDisplay,
-                avadhi.isEmpty ? '-' : avadhi
-              ];
-            }).toList(),
-            columnWidths: const [2.2, 1.3, 1.3, 1.4],
-            columnAlignments: const [
-              TextAlign.left,
-              TextAlign.center,
-              TextAlign.center,
-              TextAlign.center
-            ]));
+        child: PreviousPostingsTable(
+            postings: postings,
+            computeDuration: _computeDuration));
   }
 
   Widget _buildTransfers(EmployeeProfile? profile) {
