@@ -7,6 +7,7 @@ import '../../widgets/up_police_badge.dart';
 import '../../widgets/common/up_data_table.dart';
 import '../../widgets/profile/section_card.dart';
 import '../../widgets/profile/previous_postings_table.dart';
+import '../../widgets/profile/hob_table.dart';
 import '../../widgets/profile/field_tile.dart';
 import '../../widgets/profile/dashboard_awards_card.dart';
 import '../../widgets/profile/dashboard_punishment_card.dart';
@@ -906,35 +907,11 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget _buildHob(EmployeeProfile? profile) {
     final hob = profile?.allHob ?? const [];
-    if (hob.isEmpty) {
-      return const SectionCard(
-          title: 'HOB रिकॉर्ड',
-          icon: Icons.book_rounded,
-          color: AppTheme.successColor,
-          child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 6),
-              child: Center(
-                  child: Text('कोई HOB रिकॉर्ड नहीं',
-                      style:
-                          TextStyle(color: AppTheme.textHint, fontSize: 12)))));
-    }
-    // HOB table — 3 columns (अन्य विवरण removed per user request):
-    //   HOB Number | Date | Description
-    // Long text wraps freely; table fits screen width via FlexColumnWidth.
     return SectionCard(
-        title: 'HOB रिकॉर्ड (${hob.length})',
+        title: hob.isEmpty ? 'HOB रिकॉर्ड' : 'HOB रिकॉर्ड (${hob.length})',
         icon: Icons.book_rounded,
         color: AppTheme.successColor,
-        child: UPDataTable(
-          headers: const ['HOB #', 'दिनांक', 'विवरण'],
-          rows: hob.map((h) => [h.hobNumber, h.date, h.description]).toList(),
-          columnWidths: const [1.0, 1.4, 6.0],
-          columnAlignments: const [
-            TextAlign.center,
-            TextAlign.center,
-            TextAlign.left
-          ],
-        ));
+        child: HobTable(hob: hob));
   }
 
   Widget _buildSalary(EmployeeProfile? profile) {

@@ -116,9 +116,10 @@ class AppConstants {
   static const String keyPreviousPostings = 'पूर्व नियुक्तियाँ';
   static const String keyFromDate = 'कब से';
   static const String keyToDate = 'कब तक';
-  static const String keyEHRMS = 'E.HRMS';
-  // Fallback header variants seen in some sheet exports
-  static const String keyEHRMSAlt1 = 'EHRMS';
+  /// Real column header in the ALL/EXTRA sheets is 'EHRMS' (no dot/space).
+  static const String keyEHRMS = 'EHRMS';
+  // Fallback header variants for other sheet formats
+  static const String keyEHRMSAlt1 = 'E.HRMS';
   static const String keyEHRMSAlt2 = 'E-HRMS';
   static const String keyEHRMSAlt3 = 'E HRMS';
 

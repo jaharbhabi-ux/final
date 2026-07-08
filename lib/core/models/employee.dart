@@ -94,10 +94,12 @@ class Employee {
         map[AppConstants.keyEHRMSAlt1] ??
         map[AppConstants.keyEHRMSAlt2] ??
         map[AppConstants.keyEHRMSAlt3] ??
-        // Last-resort: scan rawData for any key containing 'ehrms'
-        map.entries.where((e) =>
-          e.key.toLowerCase().replaceAll(RegExp(r'[\s.\-]'), '') == 'ehrms'
-        ).map((e) => e.value).firstOrNull ?? '',
+        // Last-resort: scan rawData for any key that normalizes to 'ehrms'
+        map.entries
+            .where((e) => e.key.toLowerCase().replaceAll(RegExp(r'[\s.\-]'), '') == 'ehrms')
+            .map((e) => e.value)
+            .firstOrNull ??
+        '',
       ),
       name: map[AppConstants.keyName]?.toString().trim() ?? '',
       post: map[AppConstants.keyPost]?.toString().trim() ?? '',
