@@ -29,25 +29,27 @@ class DashboardAwardsCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 3,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppTheme.accentGold,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(12, 10, 12, 8),
             child: Row(
               children: [
-                Icon(Icons.emoji_events_rounded, size: 16, color: AppTheme.primaryColor),
-                const SizedBox(width: 8),
+                Icon(Icons.emoji_events_rounded,
+                    size: 16, color: AppTheme.primaryColor),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'पुरस्कार एवं विवरण',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppTheme.textPrimary,
@@ -58,15 +60,19 @@ class DashboardAwardsCard extends StatelessWidget {
             ),
           ),
           if (awards.isEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
               child: Row(
                 children: [
-                  Icon(Icons.emoji_events_outlined, size: 18, color: AppTheme.textHint),
-                  const SizedBox(width: 8),
+                  Icon(Icons.emoji_events_outlined,
+                      size: 18, color: AppTheme.textHint),
+                  SizedBox(width: 8),
                   Text(
                     'कोई पुरस्कार उपलब्ध नहीं',
-                    style: TextStyle(fontSize: 13, color: AppTheme.textHint, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.textHint,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -85,23 +91,33 @@ class DashboardAwardsCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         a.label,
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textSecondary),
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textSecondary),
                       ),
                     ),
                     if (datePart != null)
-                      Text(datePart, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppTheme.textPrimary)),
+                      Text(datePart,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.textPrimary)),
                     if (textPart.isNotEmpty)
                       Expanded(
                         child: Text(
                           textPart,
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.textPrimary),
                           textAlign: TextAlign.end,
                         ),
                       ),
                   ],
                 ),
               );
-            }).toList(),
+            }),
         ],
       ),
     );

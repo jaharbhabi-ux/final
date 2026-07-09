@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/core.dart';
 import '../widgets/common/up_data_table.dart';
+import '../widgets/common/up_app_bar.dart';
 
 /// Transfer Classification page — lists either Aagman (arrival) or
 /// Prasthan (departure) records filtered by the DG / BJD / BR prefix.
@@ -26,11 +27,10 @@ class TransferClassificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: Text(title),
+      appBar: UPAppBar(
+        title: title,
         backgroundColor: AppTheme.cardColor,
-        foregroundColor: AppTheme.textPrimary,
-        elevation: 0,
+        centerTitle: true,
         leading: IconButton(
           tooltip: 'वापस',
           icon: const Icon(Icons.arrow_back),
@@ -82,7 +82,7 @@ class TransferClassificationPage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            AppTheme.glassContainer(
+                            AppTheme.premiumCard(
                               borderRadius: 16,
                               padding: const EdgeInsets.all(16),
                               child: Icon(Icons.search_off_rounded,

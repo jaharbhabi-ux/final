@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import '../../core/models/hob.dart';
 import '../../core/theme/app_theme.dart';
 
-/// Improved HOB (Headquarters Order Book) table.
+/// HOB (Headquarters Order Book) table matching Previous Postings design.
 ///
-/// UI-only changes:
+/// Features:
 ///   • Blue gradient header
-///   • Compact rows (smaller padding / font sizes)
 ///   • Zebra rows (white / light blue-tint alternating)
 ///   • Responsive: table on wide screens, cards on narrow (< 480 px)
-///   • Horizontal scroll for the table so the description column never cramps
+///   • Full width with auto column widths
+///   • Compact rows
 ///   • Multiline, selectable description text
 ///   • Empty state with icon + message
 ///
-/// The caller passes the already-loaded List<Hob> directly.
+/// No model / API / logic changes — only UI.
 class HobTable extends StatelessWidget {
   final List<Hob> hob;
 
   const HobTable({super.key, required this.hob});
 
-  static const Color _oddRow  = Color(0xFFF0F5FF);
+  static const Color _oddRow = Color(0xFFF0F5FF);
   static const Color _evenRow = Colors.white;
 
   @override
@@ -27,9 +27,8 @@ class HobTable extends StatelessWidget {
     if (hob.isEmpty) return _emptyState();
 
     return LayoutBuilder(
-      builder: (_, constraints) => constraints.maxWidth < 480
-          ? _cardList()
-          : _table(),
+      builder: (_, constraints) =>
+          constraints.maxWidth < 480 ? _cardList() : _table(),
     );
   }
 
@@ -51,40 +50,33 @@ class HobTable extends StatelessWidget {
     );
   }
 
+  // ── Wide table layout ────────────────────────────────────────────────────
   Widget _table() {
-    // Horizontal scroll allows the description column to stay readable
-    // without compressing the HOB # and date columns.
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 520),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Table(
-            columnWidths: const {
-              0: FixedColumnWidth(60), // HOB #
-              1: FixedColumnWidth(80),  // दिनांक
-              2: FlexColumnWidth(),     // विवरण (auto / expands)
-            },
-            border: TableBorder(
-              horizontalInside: BorderSide(
-                  color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
-              verticalInside: BorderSide(
-                  color: AppTheme.borderColor.withOpacity(0.25), width: 0.5),
-              bottom: BorderSide(
-                  color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
-              left: BorderSide(
-                  color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
-              right: BorderSide(
-                  color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
-            ),
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: [
-              _headerRow(),
-              for (int i = 0; i < hob.length; i++) _dataRow(i, hob[i]),
-            ],
-          ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Table(
+        columnWidths: const {
+          0: FixedColumnWidth(50), // HOB #
+          1: FixedColumnWidth(72), // दिनांक
+          2: FlexColumnWidth(), // विवरण (auto / expands)
+        },
+        border: TableBorder(
+          horizontalInside: BorderSide(
+              color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
+          verticalInside: BorderSide(
+              color: AppTheme.borderColor.withOpacity(0.25), width: 0.5),
+          bottom: BorderSide(
+              color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
+          left: BorderSide(
+              color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
+          right: BorderSide(
+              color: AppTheme.borderColor.withOpacity(0.45), width: 0.5),
         ),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: [
+          _headerRow(),
+          for (int i = 0; i < hob.length; i++) _dataRow(i, hob[i]),
+        ],
       ),
     );
   }
@@ -100,7 +92,7 @@ class HobTable extends StatelessWidget {
       decoration: const BoxDecoration(gradient: AppTheme.headerGradient),
       children: List.generate(labels.length, (i) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
           child: Text(
             labels[i],
             textAlign: aligns[i],
@@ -123,35 +115,35 @@ class HobTable extends StatelessWidget {
       children: [
         // HOB #
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           child: Text(
             h.hobNumber.isEmpty ? '-' : h.hobNumber,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textSecondary),
           ),
         ),
         // Date
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
           child: Text(
             h.date.isEmpty ? '-' : h.date,
             textAlign: TextAlign.center,
+            softWrap: false,
+            overflow: TextOverflow.visible,
             style: const TextStyle(
-                fontSize: 10,
-                color: AppTheme.textSecondary,
-                height: 1.3),
+                fontSize: 12, color: AppTheme.textSecondary, height: 1.3),
           ),
         ),
         // Description — multiline + selectable
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: SelectableText(
             h.description.isEmpty ? '-' : h.description,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: AppTheme.textPrimary,
                 height: 1.35),
@@ -161,6 +153,7 @@ class HobTable extends StatelessWidget {
     );
   }
 
+  // ── Narrow card layout ───────────────────────────────────────────────────
   Widget _cardList() {
     return Column(
       children: [
@@ -207,18 +200,19 @@ class HobTable extends StatelessWidget {
               children: [
                 SelectableText(
                   h.description.isEmpty ? '-' : h.description,
-                  style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textPrimary,
-                      height: 1.35),
+                   style: const TextStyle(
+                       fontSize: 14,
+                       fontWeight: FontWeight.w600,
+                       color: AppTheme.textPrimary,
+                       height: 1.35),
                 ),
                 const SizedBox(height: 5),
                 Wrap(
                   spacing: 6,
                   runSpacing: 4,
                   children: [
-                    _infoLabel('HOB #: ${h.hobNumber.isEmpty ? '-' : h.hobNumber}'),
+                    _infoLabel(
+                        'HOB #: ${h.hobNumber.isEmpty ? '-' : h.hobNumber}'),
                     _infoLabel('दिनांक: ${h.date.isEmpty ? '-' : h.date}'),
                   ],
                 ),
@@ -240,7 +234,7 @@ class HobTable extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             color: AppTheme.textSecondary,
             fontWeight: FontWeight.w500),
       ),

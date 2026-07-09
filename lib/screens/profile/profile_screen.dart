@@ -5,6 +5,7 @@ import '../../core/core.dart';
 import 'employee_edit_dialog.dart';
 import '../../widgets/up_police_badge.dart';
 import '../../widgets/common/up_data_table.dart';
+import '../../widgets/common/up_app_bar.dart';
 import '../../widgets/profile/section_card.dart';
 import '../../widgets/profile/previous_postings_table.dart';
 import '../../widgets/profile/hob_table.dart';
@@ -13,6 +14,7 @@ import '../../widgets/profile/dashboard_awards_card.dart';
 import '../../widgets/profile/dashboard_punishment_card.dart';
 import '../../widgets/profile/dashboard_remarks_timeline.dart';
 import '../../widgets/profile/dashboard_other_details_card.dart';
+import '../../widgets/profile/salary_table.dart';
 import '../print/print_helper.dart';
 import '../../utils/print_shortcut.dart';
 
@@ -94,20 +96,23 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        leading: IconButton(
-          tooltip: 'वापस',
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: _handleBack,
-        ),
-        title: const Text(
-          'कर्मचारी विवरण',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
+      appBar: UPAppBar(
         backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
+        title: 'कर्मचारी विवरण',
+        actions: [
+          Consumer<EmployeeProvider>(builder: (context, provider, _) {
+            return IconButton(
+              icon: const Icon(Icons.print_rounded, size: 20),
+              onPressed: () async {
+                final employee = provider.selectedEmployee;
+                final profile = provider.selectedProfile;
+                if (employee != null) {
+                  await PrintHelper.printProfile(employee: employee, profile: profile);
+                }
+              },
+            );
+          }),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(gradient: AppTheme.backgroundGradient),
@@ -330,7 +335,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             ]),
                                           ]),
                                     ),
-                                    Container(
+Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),
                                       decoration: BoxDecoration(
@@ -341,15 +346,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   .withOpacity(0.15),
                                           borderRadius:
                                               BorderRadius.circular(5)),
-                                      child: Text(
-                                          e.isActive ? 'सक्रिय' : 'निष्क्रिय',
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w600,
-                                              color: e.isActive
-                                                  ? AppTheme.successColor
-                                                  : AppTheme.errorColor)),
-                                    ),
+                                      child: Icon(
+                                        Icons.circle,
+                                        size: 10,
+                                        color: e.isActive
+                                            ? AppTheme.successColor
+                                            : AppTheme.errorColor,
+                                      ),
+                                  ),
                                   ],
                                 ),
                               ),
@@ -363,32 +367,65 @@ class _ProfileScreenState extends State<ProfileScreen>
                     _buildResponsiveBody(employee, profile),
                     const SizedBox(height: 16),
 
-                    // BRANDING
-                    const Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.code_rounded,
-                              size: 11, color: AppTheme.textHint),
-                          SizedBox(width: 4),
-                          Text('Created by Rachit Chauhan',
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: AppTheme.textHint,
-                                  fontWeight: FontWeight.w500)),
-                          SizedBox(width: 8),
-                          Icon(Icons.phone_rounded,
-                              size: 10, color: AppTheme.textHint),
-                          SizedBox(width: 3),
-                          Text('8273212381',
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: AppTheme.textHint,
-                                  fontWeight: FontWeight.w500)),
-                        ],
+                    // BRANDING — stylish footer
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 9),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppTheme.primaryColor.withOpacity(0.10),
+                              AppTheme.primaryColor.withOpacity(0.03),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: AppTheme.primaryColor.withOpacity(0.28),
+                              width: 0.8),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Line 1 — king's sign + name (signature style)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.workspace_premium_rounded,
+                                    size: 16,
+                                    color: AppTheme.accentGold),
+                                const SizedBox(width: 6),
+                                Text('Rachit Chauhan',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontStyle: FontStyle.italic,
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0.5)),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            // Line 2 — contact number
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.phone_rounded,
+                                    size: 13,
+                                    color: AppTheme.primaryColor),
+                                const SizedBox(width: 5),
+                                Text('8273212381',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: AppTheme.textPrimary,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0.5)),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -434,160 +471,162 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget _buildProfileHeader(Employee employee) {
-    final isActive = employee.isActive;
-    return Container(
-      width: double.infinity,
-      constraints: const BoxConstraints(minHeight: 160),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        gradient: AppTheme.headerGradient,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.primaryColor.withOpacity(0.18),
-            blurRadius: 12,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── TOP ROW: avatar+identity (left) · status+shield (right) ──
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // LEFT — circular avatar + name / designation / posting
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white.withOpacity(0.18),
-                child: employee.name.isNotEmpty
-                    ? Text(
-                        employee.name[0].toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(Icons.person_rounded,
-                        size: 30, color: Colors.white),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      employee.name.isEmpty ? '-' : employee.name,
+Widget _buildProfileHeader(Employee employee) {
+  final isActive = employee.isActive;
+  return Container(
+    width: double.infinity,
+    constraints: const BoxConstraints(minHeight: 160),
+    padding: const EdgeInsets.all(14),
+    decoration: BoxDecoration(
+      gradient: AppTheme.headerGradient,
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: [
+        BoxShadow(
+          color: AppTheme.primaryColor.withOpacity(0.18),
+          blurRadius: 12,
+          offset: const Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── TOP ROW: avatar+identity (left) · status+shield (right) ──
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // LEFT — circular avatar + name / designation / posting
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.white.withOpacity(0.18),
+              child: (employee.name ?? '').isNotEmpty
+                  ? Text(
+                      (employee.name ?? '')[0].toUpperCase(),
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 26,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
-                        height: 1.2,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (employee.post.isNotEmpty) ...[
-                      const SizedBox(height: 3),
+                    )
+                  : const Icon(Icons.person_rounded,
+                      size: 30, color: Colors.white),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
                       Text(
-                        employee.post,
+                        (employee.name ?? '').isEmpty ? '-' : employee.name ?? '',
                         style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
                           color: Colors.white,
                           height: 1.2,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    ],
-                    if (employee.currentPosting.isNotEmpty) ...[
-                      const SizedBox(height: 3),
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on_rounded,
-                              size: 13, color: Colors.white70),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              employee.currentPosting,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white70,
-                                height: 1.2,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                      const SizedBox(width: 4),
+                      // The dot
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: isActive
+                              ? AppTheme.successColor.withOpacity(0.25)
+                              : AppTheme.errorColor.withOpacity(0.25),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: isActive
+                                ? AppTheme.successColor.withOpacity(0.5)
+                                : AppTheme.errorColor.withOpacity(0.5),
+                            width: 0.5,
                           ),
-                        ],
+                        ),
+                        child: Icon(
+                          Icons.circle,
+                          size: 10,
+                          color: isActive
+                              ? AppTheme.successColor
+                              : AppTheme.errorColor,
+                        ),
                       ),
                     ],
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              // RIGHT — active/inactive badge + police shield
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: isActive
-                          ? AppTheme.successColor.withOpacity(0.25)
-                          : AppTheme.errorColor.withOpacity(0.25),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: isActive
-                            ? AppTheme.successColor.withOpacity(0.5)
-                            : AppTheme.errorColor.withOpacity(0.5),
-                        width: 0.5,
-                      ),
-                    ),
-                    child: Text(
-                      isActive ? 'सक्रिय' : 'निष्क्रिय',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: isActive
-                            ? AppTheme.successColor
-                            : AppTheme.errorColor,
-                      ),
-                    ),
                   ),
-                  const SizedBox(height: 10),
-                  const UPPoliceBadge(size: 34),
+                  // Then the post and current posting as before
+                  if ((employee.post ?? '').isNotEmpty) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      employee.post ?? '',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        height: 1.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                  if ((employee.currentPosting ?? '').isNotEmpty) ...[
+                    const SizedBox(height: 3),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_rounded,
+                            size: 13, color: Colors.white70),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            employee.currentPosting ?? '',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white70,
+                              height: 1.2,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          // ── CENTER — identity chips (wrap on narrow screens) ──
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _headerChip(Icons.badge_rounded, 'PNO: ${employee.pno}'),
-              if (employee.badgeNumber.isNotEmpty)
-                _headerChip(
-                    Icons.verified_rounded, 'बैज: ${employee.badgeNumber}'),
-              if (employee.ehrms.isNotEmpty)
-                _headerChip(
-                    Icons.fingerprint_rounded, 'EHRMS: ${employee.ehrms}'),
-              if (employee.mobile.isNotEmpty)
-                _headerChip(Icons.phone_rounded, employee.mobile),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+            ),
+            const SizedBox(width: 12),
+            // RIGHT — police shield only (dot moved to name)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const UPPoliceBadge(size: 36),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        // ── CENTER — identity chips (wrap on narrow screens) ──
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _headerChip(Icons.badge_rounded, 'PNO: ${employee.pno ?? ''}'),
+            if ((employee.badgeNumber ?? '').isNotEmpty)
+              _headerChip(
+                  Icons.verified_rounded, 'बैज: ${employee.badgeNumber ?? ''}'),
+            if ((employee.ehrms ?? '').isNotEmpty)
+              _headerChip(
+                  Icons.fingerprint_rounded, 'EHRMS: ${employee.ehrms ?? ''}'),
+            if ((employee.mobile ?? '').isNotEmpty)
+              _headerChip(Icons.phone_rounded, employee.mobile ?? ''),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _headerChip(IconData icon, String text) {
     return Container(
@@ -619,11 +658,10 @@ class _ProfileScreenState extends State<ProfileScreen>
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(flex: 1, child: _buildAwards(employee)),
             const SizedBox(width: 2),
-            Expanded(flex: 1, child: _buildPunishments(employee)),
-            const SizedBox(width: 2),
             Expanded(flex: 2, child: _buildRemarksAndOther(employee)),
           ]),
           const SizedBox(height: 2),
+          _buildPunishments(employee), const SizedBox(height: 2),
           _buildPreviousPostings(profile, employee), const SizedBox(height: 2),
           _buildTransfers(profile), const SizedBox(height: 2),
           // HOB takes full width so description text doesn't wrap
@@ -636,9 +674,9 @@ class _ProfileScreenState extends State<ProfileScreen>
         const SizedBox(height: 2),
         _buildAwards(employee),
         const SizedBox(height: 2),
-        _buildPunishments(employee),
-        const SizedBox(height: 2),
         _buildRemarksAndOther(employee),
+        const SizedBox(height: 2),
+        _buildPunishments(employee),
         const SizedBox(height: 2),
         _buildPreviousPostings(profile, employee),
         const SizedBox(height: 2),
@@ -656,19 +694,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     // "व्यक्तिगत विवरण" heading (service fields merged in). Empty values
     // are kept so the card can render its "उपलब्ध नहीं" placeholder.
     final fields = <(String, String)>[
-      ('EHRMS', employee.ehrms),
-      ('पिता का नाम', employee.fatherName),
-      ('नामिनी', employee.nomineeName),
-      ('जन्मतिथि', employee.dob),
-      ('भर्ती तिथि', employee.recruitmentDate),
-      ('जाति', employee.caste),
-      ('उपजाति', employee.subCaste),
-      ('गृह जनपद', employee.homeDistrict),
-      ('पता', employee.address),
-      ('योग्यता', employee.qualification),
-      ('मोबाइल', employee.mobile),
-      ('मु0आ0 पदोन्नति', employee.promotion),
-      ('जनपद में नियुक्ति', employee.districtPosting),
+      ('EHRMS', employee.ehrms ?? ''),
+      ('पिता का नाम', employee.fatherName ?? ''),
+      ('नामिनी', employee.nomineeName ?? ''),
+      ('जन्मतिथि', employee.dob ?? ''),
+      ('भर्ती तिथि', employee.recruitmentDate ?? ''),
+      ('जाति', employee.caste ?? ''),
+      ('उपजाति', employee.subCaste ?? ''),
+      ('गृह जनपद', employee.homeDistrict ?? ''),
+      ('पता', employee.address ?? ''),
+      ('योग्यता', employee.qualification ?? ''),
+      ('मोबाइल', employee.mobile ?? ''),
+      ('मु0आ0 पदोन्नति', employee.promotion ?? ''),
+      ('जनपद में नियुक्ति', employee.districtPosting ?? ''),
     ];
     if (profile != null && profile.relations.isNotEmpty) {
       for (final r in profile.relations) {
@@ -683,7 +721,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         icon: Icons.person_rounded,
         color: AppTheme.secondaryColor,
         child: LayoutBuilder(builder: (context, c) {
-      final w = c.maxWidth;
+          final w = c.maxWidth;
           int cross = 1;
           if (w > 1000) {
             cross = 5; // desktop: 5 per row
@@ -692,53 +730,47 @@ class _ProfileScreenState extends State<ProfileScreen>
           } else if (w > 420) {
             cross = 2; // mobile: 2 per row
           }
-      const spacing = 10.0;
-      final cardWidth = (w - (cross - 1) * spacing) / cross;
-      return Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: [
-          for (int i = 0; i < fields.length; i++)
-            SizedBox(
-              width: cardWidth,
-              child: FieldTile(
-                label: fields[i].$1,
-                value: fields[i].$2,
-              ),
-            ),
-        ],
-      );
-    }));
+          const spacing = 10.0;
+          final cardWidth = (w - (cross - 1) * spacing) / cross;
+          return Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: [
+              for (int i = 0; i < fields.length; i++)
+                SizedBox(
+                  width: cardWidth,
+                  child: FieldTile(
+                    label: fields[i].$1,
+                    value: fields[i].$2,
+                  ),
+                ),
+            ],
+          );
+        }));
   }
 
   Widget _buildAwards(Employee employee) {
     final awards = <(String, String, IconData, Color)>[
       (
         'गुड एन्ट्री',
-        employee.goodEntry,
+        employee.goodEntry ?? '',
         Icons.star_rounded,
         AppTheme.warningColor
       ),
       (
         'नगद पुरूष्कार',
-        employee.cashReward,
+        employee.cashReward ?? '',
         Icons.card_giftcard_rounded,
         AppTheme.successColor
       ),
-      ('पदक', employee.medal, Icons.emoji_events_rounded, AppTheme.accentGold),
+      ('पदक', employee.medal ?? '', Icons.emoji_events_rounded, AppTheme.accentGold),
       (
         'सत्यनिष्ठा',
-        employee.integrity,
+        employee.integrity ?? '',
         Icons.verified_user_rounded,
         AppTheme.infoColor
       ),
-      (
-        'अन्य विवरण',
-        employee.otherDetails,
-        Icons.description_rounded,
-        AppTheme.textSecondary
-      ),
-    ].where((e) => e.$2.isNotEmpty).toList();
+    ].where((e) => (e.$2 ?? '').isNotEmpty).toList();
     return DashboardAwardsCard(
       awards: awards
           .map((a) => (label: a.$1, value: a.$2, icon: a.$3, color: a.$4))
@@ -747,31 +779,42 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _buildPunishments(Employee employee) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DashboardPunishmentCard(
-              title: 'लघु दण्ड',
-              icon: Icons.gavel_rounded,
-              color: AppTheme.errorColor,
-              content: employee.minorPunishment),
-          const SizedBox(height: 8),
-          DashboardPunishmentCard(
-              title: 'क्षुद्र दण्ड',
-              icon: Icons.block_rounded,
-              color: AppTheme.errorColor,
-              content: employee.majorPunishment),
-        ]);
+    final minor = DashboardPunishmentCard(
+        title: 'लघु दण्ड',
+        icon: Icons.gavel_rounded,
+        color: AppTheme.errorColor,
+        content: employee.minorPunishment ?? '');
+    final major = DashboardPunishmentCard(
+        title: 'क्षुद्र दण्ड',
+        icon: Icons.block_rounded,
+        color: AppTheme.errorColor,
+        content: employee.majorPunishment ?? '');
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 520) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: minor),
+              const SizedBox(width: 8),
+              Expanded(child: major),
+            ],
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [minor, const SizedBox(height: 8), major],
+        );
+      },
+    );
   }
 
   Widget _buildRemarksAndOther(Employee employee) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          DashboardRemarksTimeline(content: employee.remark),
-          const SizedBox(height: 8),
-          DashboardOtherDetailsCard(content: employee.otherDetails),
-        ]);
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      DashboardRemarksTimeline(content: employee.remark ?? ''),
+      const SizedBox(height: 8),
+      DashboardOtherDetailsCard(content: employee.otherDetails ?? ''),
+    ]);
   }
 
   static DateTime? _parseDate(String s) {
@@ -781,7 +824,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (lower == 'वर्तमान' ||
         lower == 'से लगातार' ||
         lower == 'current' ||
-        lower == 'present') return DateTime.now();
+        lower == 'present') {
+      return DateTime.now();
+    }
     final parts = t.split(RegExp(r'[/\-.]'));
     if (parts.length == 3) {
       try {
@@ -819,19 +864,19 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget _buildPreviousPostings(EmployeeProfile? profile, Employee employee) {
     List<PreviousPosting> postings = profile?.previousPostings ?? const [];
     final hasAnyDate =
-        postings.any((p) => p.fromDateRaw.isNotEmpty || p.toDateRaw.isNotEmpty);
+        postings.any((p) => (p.fromDateRaw ?? '').isNotEmpty || (p.toDateRaw ?? '').isNotEmpty);
     if (postings.isEmpty || !hasAnyDate) {
-      final locLines = employee.previousPostings
+      final locLines = (employee.previousPostings ?? '')
           .split(RegExp(r'\r?\n'))
           .where((s) => s.trim().isNotEmpty)
           .map((s) => s.trim())
           .toList();
-      final fromLines = employee.fromDate
+      final fromLines = (employee.fromDate ?? '')
           .split(RegExp(r'\r?\n'))
           .where((s) => s.trim().isNotEmpty)
           .map((s) => s.trim())
           .toList();
-      final toLines = employee.toDate
+      final toLines = (employee.toDate ?? '')
           .split(RegExp(r'\r?\n'))
           .where((s) => s.trim().isNotEmpty)
           .map((s) => s.trim())
@@ -842,10 +887,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         postings = List.generate(
             count,
             (i) => PreviousPosting(
-                pno: employee.pno,
-                location: i < locLines.length ? locLines[i] : '',
-                fromDateRaw: i < fromLines.length ? fromLines[i] : '',
-                toDateRaw: i < toLines.length ? toLines[i] : ''));
+                pno: employee.pno ?? '',
+                location: i < locLines.length ? (locLines[i] ?? '') : '',
+                fromDateRaw: i < fromLines.length ? (fromLines[i] ?? '') : '',
+                toDateRaw: i < toLines.length ? (toLines[i] ?? '') : ''));
       }
     }
     return SectionCard(
@@ -853,8 +898,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         icon: Icons.history_rounded,
         color: AppTheme.warningColor,
         child: PreviousPostingsTable(
-            postings: postings,
-            computeDuration: _computeDuration));
+            postings: postings, computeDuration: _computeDuration));
   }
 
   Widget _buildTransfers(EmployeeProfile? profile) {
@@ -887,11 +931,11 @@ class _ProfileScreenState extends State<ProfileScreen>
             rows: transfers
                 .map((t) => [
                       t.directionLabel,
-                      t.fromLocation,
-                      t.toLocation,
-                      t.orderNumber,
-                      t.fileNumber,
-                      t.details
+                      t.fromLocation ?? '',
+                      t.toLocation ?? '',
+                      t.orderNumber ?? '',
+                      t.fileNumber ?? '',
+                      t.details ?? ''
                     ])
                 .toList(),
             columnWidths: const [1.0, 1.3, 1.3, 1.8, 1.6, 1.8],
@@ -932,20 +976,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         title: 'वेतन विवरण (${pay.length})',
         icon: Icons.currency_rupee_rounded,
         color: AppTheme.warningColor,
-        child: UPDataTable(
-            headers: const ['माह', 'मूल वेतन'],
-            rows: pay
-                .where(
-                    (p) => p.incrementMonth.isNotEmpty || p.basicPay.isNotEmpty)
-                .map((p) => [
-                      p.incrementMonth.isEmpty ? '-' : p.incrementMonth,
-                      p.basicPay.isEmpty ? '-' : p.basicPay
-                    ])
-                .toList(),
-            columnWidths: const [1.0, 1.6],
-            columnAlignments: const [TextAlign.center, TextAlign.right],
-            cellPadding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 5)));
+        child: SalaryTable(pay: pay));
   }
 }
 

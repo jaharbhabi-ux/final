@@ -142,7 +142,7 @@ class PreviousPostingsTable extends StatelessWidget {
             '${index + 1}',
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textSecondary),
           ),
@@ -154,7 +154,7 @@ class PreviousPostingsTable extends StatelessWidget {
           child: SelectableText(
             p.location.isEmpty ? '-' : p.location,
             style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: AppTheme.textPrimary,
                 height: 1.35),
@@ -168,7 +168,7 @@ class PreviousPostingsTable extends StatelessWidget {
             p.fromDateRaw.isEmpty ? '-' : p.fromDateRaw,
             textAlign: TextAlign.center,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 color: AppTheme.textSecondary,
                 height: 1.3),
           ),
@@ -183,7 +183,7 @@ class PreviousPostingsTable extends StatelessWidget {
                   toText,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 13,
                       color: AppTheme.textSecondary,
                       height: 1.3),
                 ),
@@ -195,7 +195,7 @@ class PreviousPostingsTable extends StatelessWidget {
           child: avadhi.isEmpty
               ? const Text('-',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 11, color: AppTheme.textHint))
+                      style: TextStyle(fontSize: 13, color: AppTheme.textHint))
               : Center(child: _durationChip(avadhi)),
         ),
       ],
@@ -252,9 +252,9 @@ class PreviousPostingsTable extends StatelessWidget {
                 SelectableText(
                   p.location.isEmpty ? '-' : p.location,
                   style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppTheme.textPrimary),
+                       fontSize: 14,
+                       fontWeight: FontWeight.w600,
+                       color: AppTheme.textPrimary),
                 ),
                 const SizedBox(height: 6),
                 Wrap(
@@ -303,7 +303,7 @@ class PreviousPostingsTable extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-            fontSize: 10, fontWeight: FontWeight.w700, color: _green),
+            fontSize: 12, fontWeight: FontWeight.w700, color: _green),
       ),
     );
   }
@@ -320,7 +320,7 @@ class PreviousPostingsTable extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: FontWeight.w600,
             color: AppTheme.primaryColor),
       ),
@@ -337,7 +337,7 @@ class PreviousPostingsTable extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             color: AppTheme.textSecondary,
             fontWeight: FontWeight.w500),
       ),

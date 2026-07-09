@@ -29,7 +29,7 @@ class UPDataTable extends StatelessWidget {
     this.columnWidths,
     this.columnMaxLines,
     this.columnAlignments,
-    this.headerColor = const Color(0xFF0D47A1),
+    this.headerColor = AppTheme.primaryColor,
     this.evenRowColor = Colors.white,
     this.oddRowColor = const Color(0xFFF8FAFC),
     this.cellPadding = const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -71,7 +71,7 @@ class UPDataTable extends StatelessWidget {
           // Header row
           TableRow(
             decoration: const BoxDecoration(
-              color: Color(0xFF0D47A1),
+              color: AppTheme.primaryColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
@@ -111,10 +111,10 @@ class UPDataTable extends StatelessWidget {
                       sortedRows[r][c].isEmpty ? '-' : sortedRows[r][c],
                       style: cellStyle ??
                           const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.textPrimary,
-                            height: 1.3,
+                             fontSize: 14,
+                             fontWeight: FontWeight.w500,
+                             color: AppTheme.textPrimary,
+                             height: 1.3,
                           ),
                       textAlign: aligns[c],
                       maxLines: (maxLines[c] != null && maxLines[c]! > 0)

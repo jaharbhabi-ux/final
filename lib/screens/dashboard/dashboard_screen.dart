@@ -174,45 +174,44 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   // ─── HEADER ────────────────────────────────────────────────────
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 0),
-      child: Row(
-        children: [
-          const UPPoliceBadge(size: 40),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'उत्तर प्रदेश पुलिस',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: AppTheme.textPrimary,
-                    height: 1.2,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 1),
-                  Text(
-                  'प्रधान लिपिक शाखा जनपद बरेली',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.accentGold,
-                    height: 1.2,
-                    letterSpacing: 0.2,
-                  ),
-                ),
-              ],
+Widget _buildHeader() {
+  return Padding(
+    padding: const EdgeInsets.only(top: 10, bottom: 0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const UPPoliceBadge(size: 42),
+        const SizedBox(width: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'उत्तर प्रदेश पुलिस',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                color: AppTheme.textPrimary,
+                height: 1.2,
+                letterSpacing: 0.5,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+            const SizedBox(height: 1),
+            Text(
+              'प्रधान लिपिक शाखा जनपद बरेली',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.accentGold,
+                height: 1.2,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
   // ─── SEARCH BAR ────────────────────────────────────────────────
   Widget _buildSearchBar() {
@@ -640,31 +639,53 @@ class _DashboardScreenState extends State<DashboardScreen>
   // ─── BRANDING ──────────────────────────────────────────────────
   Widget _buildBranding() {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Row(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppTheme.primaryColor.withOpacity(0.10),
+              AppTheme.primaryColor.withOpacity(0.03),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color: AppTheme.primaryColor.withOpacity(0.28), width: 0.8),
+        ),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(Icons.code_rounded, size: 11, color: AppTheme.textHint),
-            SizedBox(width: 4),
-            Text(
-              'Created by Rachit Chauhan',
-              style: TextStyle(
-                fontSize: 9,
-                color: AppTheme.textHint,
-                fontWeight: FontWeight.w500,
-              ),
+          children: [
+            // Line 1 — king's sign + name (signature style)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.workspace_premium_rounded,
+                    size: 16, color: AppTheme.accentGold),
+                const SizedBox(width: 6),
+                Text('Rachit Chauhan',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5)),
+              ],
             ),
-            SizedBox(width: 8),
-            Icon(Icons.phone_rounded, size: 10, color: AppTheme.textHint),
-            SizedBox(width: 3),
-            Text(
-              '8273212381',
-              style: TextStyle(
-                fontSize: 9,
-                color: AppTheme.textHint,
-                fontWeight: FontWeight.w500,
-              ),
+            const SizedBox(height: 5),
+            // Line 2 — contact number
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.phone_rounded,
+                    size: 13, color: AppTheme.primaryColor),
+                const SizedBox(width: 5),
+                Text('8273212381',
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5)),
+              ],
             ),
           ],
         ),

@@ -455,31 +455,62 @@ class _EmployeeEditDialogState extends State<EmployeeEditDialog> {
                   ),
                 ]),
                 const SizedBox(height: 6),
-                // Branding
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Icon(Icons.code_rounded,
-                      size: 12, color: Colors.grey.shade400),
-                  const SizedBox(width: 4),
-                  Text('Created by ',
-                      style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade500,
-                          fontWeight: FontWeight.w500)),
-                  const Text('Rachit Chauhan',
-                      style: TextStyle(
-                          fontSize: 9,
-                          color: AppTheme.primaryColor,
-                          fontWeight: FontWeight.w700)),
-                  const SizedBox(width: 8),
-                  Icon(Icons.phone_rounded,
-                      size: 10, color: Colors.grey.shade400),
-                  const SizedBox(width: 3),
-                  Text('8273212381',
-                      style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade500,
-                          fontWeight: FontWeight.w500)),
-                ]),
+                // Branding — stylish footer
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 9),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppTheme.primaryColor.withOpacity(0.10),
+                          AppTheme.primaryColor.withOpacity(0.03),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          color: AppTheme.primaryColor.withOpacity(0.28),
+                          width: 0.8),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Line 1 — king's sign + name (signature style)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.workspace_premium_rounded,
+                                size: 16, color: AppTheme.accentGold),
+                            const SizedBox(width: 6),
+                            Text('Rachit Chauhan',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic,
+                                    color: AppTheme.primaryColor,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.5)),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        // Line 2 — contact number
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.phone_rounded,
+                                size: 13, color: AppTheme.primaryColor),
+                            const SizedBox(width: 5),
+                            Text('8273212381',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppTheme.textPrimary,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.5)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ]),
             ),
           ]),

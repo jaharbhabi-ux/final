@@ -104,15 +104,14 @@ class _InitialLoading extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Glassmorphism loading card
-              AppTheme.glassContainer(
+              // Premium loading card
+              AppTheme.premiumCard(
                 borderRadius: 20,
-                blurSigma: 16,
                 padding: const EdgeInsets.all(40),
                 child: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    UPPoliceBadge(size: 64),
+                    UPPoliceBadge(size: 66),
                     SizedBox(height: 28),
                     SizedBox(
                       width: 36,
@@ -147,10 +146,10 @@ class _InitialLoading extends StatelessWidget {
               ),
               if (provider.error.isNotEmpty) ...[
                 const SizedBox(height: 24),
-                AppTheme.glassContainer(
+                AppTheme.premiumCard(
                   borderRadius: 14,
                   padding: const EdgeInsets.all(20),
-                  bgColor: AppTheme.errorColor.withOpacity(0.15),
+                  cardBorderColor: AppTheme.errorColor.withOpacity(0.5),
                   child: Column(
                     children: [
                       Text(

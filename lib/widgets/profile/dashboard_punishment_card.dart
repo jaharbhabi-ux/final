@@ -18,7 +18,9 @@ class DashboardPunishmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final raw = content.trim();
-    final lines = raw.isEmpty ? const <String>[] : raw.split('\n').where((s) => s.trim().isNotEmpty).toList();
+    final lines = raw.isEmpty
+        ? const <String>[]
+        : raw.split('\n').where((s) => s.trim().isNotEmpty).toList();
 
     return Container(
       decoration: BoxDecoration(
@@ -38,13 +40,15 @@ class DashboardPunishmentCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 3,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(14)),
             ),
           ),
           Padding(
@@ -56,28 +60,35 @@ class DashboardPunishmentCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textPrimary),
                   ),
                 ),
               ],
             ),
           ),
           if (lines.isEmpty)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 4, 12, 12),
               child: Row(
                 children: [
                   Icon(Icons.block_rounded, size: 18, color: AppTheme.textHint),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8),
                   Text(
                     'कोई रिकॉर्ड उपलब्ध नहीं',
-                    style: TextStyle(fontSize: 13, color: AppTheme.textHint, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.textHint,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
             )
           else
             Flexible(
+              fit: FlexFit.loose,
               child: ListView.separated(
                 shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
@@ -88,12 +99,18 @@ class DashboardPunishmentCard extends StatelessWidget {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('•', style: TextStyle(fontSize: 16, color: color, height: 1.2)),
+                      Text('•',
+                          style: TextStyle(
+                              fontSize: 16, color: color, height: 1.2)),
                       const SizedBox(width: 8),
                       Expanded(
                         child: SelectableText(
                           line,
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppTheme.textPrimary, height: 1.3),
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.textPrimary,
+                              height: 1.3),
                         ),
                       ),
                     ],

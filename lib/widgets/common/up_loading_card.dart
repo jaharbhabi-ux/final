@@ -17,7 +17,7 @@ class UPLoadingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTheme.glassContainer(
+    return AppTheme.premiumCard(
       borderRadius: 20,
       padding: EdgeInsets.all(size),
       child: Column(
@@ -63,7 +63,7 @@ class UPInlineLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTheme.glassContainer(
+    return AppTheme.premiumCard(
       borderRadius: 8,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(

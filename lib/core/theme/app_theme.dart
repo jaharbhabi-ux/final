@@ -1,45 +1,37 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
-/// Premium Glassmorphism Theme — UP Police HRMS
-/// True frosted-glass cards over a deep vibrant gradient background.
+/// Premium Modern Eye-Comfort Theme — UP Police HRMS
+/// Clean white cards on soft light background with excellent contrast.
 class AppTheme {
   AppTheme._();
 
   // ──────────────────────────────────────────────
-  // 🎨 Color Palette
+  // 🎨 Color Palette - Premium Eye-Comfort Theme
   // ──────────────────────────────────────────────
-  static const Color primaryColor = Color(0xFF1A56DB); // Vibrant Blue
-  static const Color secondaryColor = Color(0xFF3B82F6); // Bright Blue
-  static const Color primaryDark = Color(0xFF1E3A8A); // Deep Navy
-  static const Color accentGold = Color(0xFFF59E0B); // Warm Gold
-  static const Color accentPurple = Color(0xFF7C3AED); // Purple
-  static const Color accentTeal = Color(0xFF06B6D4); // Teal
+  static const Color primaryColor = Color(0xFF14B8A6); // Primary Accent
+  static const Color secondaryColor = Color(0xFF0F766E); // Card Title / Header
+  static const Color primaryDark = Color(0xFF0F3D33); // Dark Background (not used in light theme)
+  static const Color accentGold = Color(0xFFF59E0B); // Warning
+  static const Color accentPurple = Color(0xFF10B981); // Success
+  static const Color accentTeal = Color(0xFF10B981); // Success (for consistency)
 
-  // Surfaces — kept light so text on cards stays readable
-  static const Color backgroundColor =
-      Color(0xFF0F1B3D); // deep navy (scaffold behind glass)
-  static const Color surfaceColor = Color(0xFFF8FAFC);
-  static const Color cardColor = Colors.white;
-  static const Color borderColor = Color(0xFFCBD5E1);
+  // Surfaces - Premium Light Theme
+  static const Color backgroundColor = Color(0xFFF8FAFC); // Soft light background
+  static const Color surfaceColor = Color(0xFFF8FAFC); // Light surface
+  static const Color cardColor = Colors.white; // White cards
+  static const Color borderColor = Color(0xFFE2E8F0); // Borders
 
-  // Glass helpers
-  static const Color glassWhite = Color(0x0AFFFFFF);
-  static const Color glassLight = Color(0x14FFFFFF);
-  static const Color glassMedium = Color(0x1FFFFFFF);
-  static const Color glassCard = Colors.white;
+  // Text - High contrast, readable
+  static const Color textPrimary = Color(0xFF1E293B); // Primary text (dark gray)
+  static const Color textSecondary = Color(0xFF64748B); // Secondary text
+  static const Color textHint = Color(0xFF9CA3AF); // Hints/light text
+  static const Color sectionHeader = Color(0xFF0F766E); // Card titles / Header
 
-  // Text — dark, for use on white/glass cards
-  static const Color textPrimary = Color(0xFF0F172A);
-  static const Color textSecondary = Color(0xFF475569);
-  static const Color textHint = Color(0xFF94A3B8);
-  static const Color sectionHeader = Color(0xFF1A56DB);
-
-  // Status
-  static const Color successColor = Color(0xFF10B981);
-  static const Color warningColor = Color(0xFFF59E0B);
-  static const Color errorColor = Color(0xFFEF4444);
-  static const Color infoColor = Color(0xFF3B82F6);
+  // Status - Semantic colors
+  static const Color successColor = Color(0xFF22C55E); // Green - Success
+  static const Color warningColor = Color(0xFFF59E0B); // Orange - Warning
+  static const Color errorColor = Color(0xFFEF4444); // Red - Error
+  static const Color infoColor = Color(0xFF3B82F6); // Blue - Info
 
   // ──────────────────────────────────────────────
   // 📐 Typography
@@ -88,7 +80,7 @@ class AppTheme {
   static TextStyle get statNumber => const TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w800,
-      color: textPrimary,
+      color: secondaryColor,
       height: 1.1);
   static TextStyle get statLabel => const TextStyle(
       fontSize: 11,
@@ -109,17 +101,13 @@ class AppTheme {
   // 🎨 Gradients
   // ──────────────────────────────────────────────
 
-  /// Deep navy → midnight blue → royal blue — the app's full-screen backdrop.
   static const LinearGradient backgroundGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
     colors: [
-      Color(0xFF0A1628), // near-black navy
-      Color(0xFF0F2167), // deep indigo-navy
-      Color(0xFF1A3A8F), // royal blue
-      Color(0xFF1D4ED8), // vibrant blue
+      Color(0xFFF8FAFC), // Soft light background
+      Color(0xFFF1F5F9), // Slightly darker light
     ],
-    stops: [0.0, 0.35, 0.65, 1.0],
   );
 
   static const LinearGradient primaryGradient = LinearGradient(
@@ -131,7 +119,7 @@ class AppTheme {
   static const LinearGradient headerGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1A56DB), Color(0xFF2563EB)],
+    colors: [secondaryColor, Color(0xFF065F46)],
   );
 
   static const LinearGradient purpleGradient = LinearGradient(
@@ -154,15 +142,15 @@ class AppTheme {
     ),
     scaffoldBackgroundColor: backgroundColor,
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF0F2167),
-      foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      foregroundColor: secondaryColor,
       elevation: 0,
       centerTitle: true,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: Colors.white,
+          color: secondaryColor,
           letterSpacing: 0.3),
     ),
     cardTheme: CardThemeData(
@@ -188,7 +176,7 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.white.withOpacity(0.92),
+      fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -198,7 +186,7 @@ class AppTheme {
           borderSide: const BorderSide(color: borderColor)),
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: primaryColor, width: 2)),
+          borderSide: BorderSide(color: primaryColor, width: 2)),
       errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: errorColor)),
@@ -229,7 +217,7 @@ class AppTheme {
         color: primaryColor, linearTrackColor: borderColor),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: textPrimary,
+      backgroundColor: secondaryColor,
       contentTextStyle: const TextStyle(color: Colors.white),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
@@ -253,12 +241,47 @@ class AppTheme {
     '12': 'दिसंबर',
   };
 
+// ──────────────────────────────────────────────
+  // 🪟 Premium Card Helper
+  // Creates elegant white cards with subtle shadows for eye comfort
   // ──────────────────────────────────────────────
-  // 🪟 True Glassmorphism Card Helper
-  //
-  // Uses BackdropFilter + semi-transparent bg for a real frosted-glass
-  // effect over the deep gradient background.
-  // ──────────────────────────────────────────────
+  static Widget premiumCard({
+    required Widget child,
+    double borderRadius = 16,
+    EdgeInsetsGeometry? padding,
+    List<BoxShadow>? boxShadow,
+    Color? cardBorderColor,
+  }) {
+    return Container(
+      padding: padding,
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(
+          color: cardBorderColor ?? borderColor,
+          width: 1,
+        ),
+        boxShadow: boxShadow ??
+            [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+                spreadRadius: 0,
+              ),
+            ],
+      ),
+child: child,
+    );
+  }
+
+  @Deprecated('Use premiumCard instead for the new eye-comfort theme')
   static Widget glassContainer({
     required Widget child,
     double borderRadius = 16,
@@ -267,46 +290,12 @@ class AppTheme {
     EdgeInsetsGeometry? padding,
     List<BoxShadow>? boxShadow,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-        child: Container(
-          padding: padding,
-          decoration: BoxDecoration(
-            // Use caller's bgColor as-is (preserving its alpha).
-            // When no bgColor is given, default to near-opaque white.
-            color: bgColor ?? Colors.white.withOpacity(0.88),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.70),
-              width: 1.0,
-            ),
-            boxShadow: boxShadow ??
-                [
-                  BoxShadow(
-                    color: const Color(0xFF1A56DB).withOpacity(0.15),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.10),
-                    blurRadius: 12,
-                    offset: const Offset(0, 3),
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: Colors.white.withOpacity(0.6),
-                    blurRadius: 0,
-                    offset: const Offset(0, -1),
-                    spreadRadius: 0,
-                  ),
-                ],
-          ),
-          child: child,
-        ),
-      ),
+    return premiumCard(
+      child: child,
+      borderRadius: borderRadius,
+      padding: padding,
+      boxShadow: boxShadow,
+      cardBorderColor: bgColor?.withOpacity(0.5) ?? borderColor,
     );
   }
 

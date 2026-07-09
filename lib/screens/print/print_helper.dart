@@ -180,11 +180,12 @@ class PrintHelper {
             decoration: pw.BoxDecoration(
                 color: a ? PdfColors.green100 : PdfColors.red100,
                 borderRadius: pw.BorderRadius.circular(4)),
-            child: pw.Text(a ? 'सक्रिय' : 'निष्क्रिय',
-                style: pw.TextStyle(
-                    font: _bold,
-                    fontSize: 9,
-                    color: a ? PdfColors.green700 : PdfColors.red700))),
+            child: pw.Container(
+                width: 6,
+                height: 6,
+                decoration: pw.BoxDecoration(
+                    color: a ? PdfColors.green700 : PdfColors.red700,
+                    shape: pw.BoxShape.circle))),
       ]),
     );
   }

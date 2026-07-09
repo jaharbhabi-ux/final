@@ -17,16 +17,16 @@ class UPStatCard extends StatelessWidget {
     this.onTap,
   });
 
-  @override
+@override
   Widget build(BuildContext context) {
-    return AppTheme.glassContainer(
+    return AppTheme.premiumCard(
       borderRadius: 12,
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 38, minWidth: 0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 38, minWidth: 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -53,7 +53,7 @@ class UPStatCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.center,
